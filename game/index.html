@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>2048</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>2048</h1>
+            <div class="score-box">
+                <div class="score-label">SCORE</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="score-box">
+                <div class="score-label">BEST</div>
+                <div class="score-value" id="best">0</div>
+            </div>
+        </header>
+        <div class="game-intro">
+            <span>Join the tiles, get to <strong>2048</strong>!</span>
+            <button id="restart-btn">New Game</button>
+        </div>
+        <div id="board-container">
+            <div id="board"></div>
+        </div>
+        <div id="game-over" class="hidden">
+            <div class="overlay">
+                <div class="message">Game Over!</div>
+                <button id="retry-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
