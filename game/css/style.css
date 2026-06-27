@@ -78,6 +78,21 @@ header {
     line-height: 1;
 }
 
+.lang-link {
+    background: var(--btn-bg);
+    color: #f9f6f2;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.lang-link:hover {
+    background: var(--btn-hover);
+}
+
 h1 {
     font-size: 48px;
     font-weight: 700;
@@ -185,11 +200,11 @@ h1 {
     justify-content: center;
     font-weight: 700;
     border-radius: 6px;
-    /* 视觉质感 */
+    /* Visual texture */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 高数值方块添加发光效果 */
+/* Glow effect for high-value tiles */
 .tile-128 .tile-inner, .tile-256 .tile-inner, .tile-512 .tile-inner, 
 .tile-1024 .tile-inner, .tile-2048 .tile-inner, .tile-super .tile-inner {
     box-shadow: 0 0 15px rgba(243, 215, 116, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -233,7 +248,7 @@ h1 {
     100% { transform: scale(1); }
 }
 
-/* 分数变化动画 */
+/* Score change animation */
 .score-increase {
     animation: score-pop 0.4s ease-out;
 }
@@ -249,7 +264,7 @@ h1 {
     }
 }
 
-/* 颜色主题 - 使用渐变增加立体感 */
+/* Color theme - gradients for depth */
 .tile-2    { background: linear-gradient(135deg, #eee4da 0%, #e8dcc8 100%); color: #776e65; }
 .tile-4    { background: linear-gradient(135deg, #ede0c8 0%, #e6d4b8 100%); color: #776e65; }
 .tile-8    { background: linear-gradient(135deg, #f2b179 0%, #eda566 100%); color: #f9f6f2; }

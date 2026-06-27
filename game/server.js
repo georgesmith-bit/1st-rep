@@ -10,7 +10,7 @@ const MIME_TYPES = {
     '.html': 'text/html'
 };
 
-// 日志文件
+// Log file
 const log = (msg) => {
     const ts = new Date().toISOString().slice(11, 23);
     const line = `[${ts}] ${msg}\n`;
@@ -18,13 +18,13 @@ const log = (msg) => {
     console.log(line.trim());
 };
 
-// 远程控制：命令队列
+// Remote control: command queue
 let cmdQueue = [];
 let latestState = null;
 let latestDOM = null;
 
 const server = http.createServer((req, res) => {
-    // API: 获取下一条命令
+    // API: Get next command
     if (req.url === '/cmd' && req.method === 'GET') {
         const cmd = cmdQueue.shift() || null;
         if (cmd !== null) {
@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // API: 发送命令 (POST body: direction 0-3)
+    // API: Send command (POST body: direction 0-3)
     if (req.url === '/cmd' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -54,7 +54,7 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // API: 客户端上报状态
+    // API: Client reports state
     if (req.url === '/state' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -69,14 +69,14 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // API: 获取游戏状态
+    // API: Get game state
     if (req.url === '/state' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(latestState || { error: 'no state yet' }));
         return;
     }
 
-    // API: 客户端上报 DOM 视觉状态
+    // API: Client reports DOM visual state
     if (req.url === '/dom' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -99,16 +99,28 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // API: 获取 DOM 视觉状态
+    // API: Get DOM visual state
     if (req.url === '/dom' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(latestDOM || { error: 'no dom yet' }));
         return;
     }
     
-    // 静态文件
-    let filePath = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+    // Root redirect to English version
+    if (req.url === '/' || req.url === '/index.html') {
+        res.writeHead(302, { 'Location': '/en/' });
+        res.end();
+        return;
+    }
+
+    // Static files
+    let filePath = req.url.split('?')[0];
     filePath = path.resolve(path.join(BASE_DIR, filePath));
+
+    // If path is a directory, serve index.html inside it
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+        filePath = path.join(filePath, 'index.html');
+    }
     
     if (!filePath.startsWith(BASE_DIR)) {
         res.writeHead(403);

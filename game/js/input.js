@@ -1,16 +1,16 @@
-// ==================== 输入处理 ====================
+// ==================== Input Handling ====================
 
 let touchStartX = 0;
 let touchStartY = 0;
 const SWIPE_THRESHOLD = 30;
 
 export function initInput(onMove) {
-    // 阻止移动端默认滚动行为
+    // Prevent default scroll behavior on mobile
     document.addEventListener('touchmove', e => {
         e.preventDefault();
     }, { passive: false });
 
-    // 触摸滑动
+    // Touch swipe
     document.addEventListener('touchstart', e => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -31,7 +31,7 @@ export function initInput(onMove) {
         }
     }, { passive: true });
 
-    // 键盘
+    // Keyboard
     document.addEventListener('keydown', e => {
         switch (e.key) {
             case 'ArrowUp':    case 'w': case 'W': e.preventDefault(); onMove(0); break;

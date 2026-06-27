@@ -1,4 +1,4 @@
-// ==================== UI 渲染 ====================
+// ==================== UI Rendering ====================
 
 import { GRID_SIZE, grid, gameState } from './data.js';
 
@@ -8,26 +8,26 @@ const bestEl = document.getElementById('best');
 const gameOverEl = document.getElementById('game-over');
 const winMessageEl = document.getElementById('win-message');
 
-// 按 ID 追踪方块 DOM 元素
+// Track tile DOM elements by ID
 let tileElements = new Map(); // id -> DOM element
 let gridBackgroundBuilt = false;
 
-// 缓存布局参数
+// Cache layout parameters
 let layoutCache = {
     gap: 0,
     cellSize: 0,
     boardWidth: 0
 };
 
-// 上一次分数，用于检测变化
+// Previous score, used to detect changes
 let lastScore = 0;
 
 function updateLayoutCache() {
     const boardRect = boardEl.getBoundingClientRect();
     const boardWidth = boardRect.width;
-    
+
     if (boardWidth === layoutCache.boardWidth) return;
-    
+
     layoutCache.boardWidth = boardWidth;
     layoutCache.gap = boardWidth * 0.02;
     layoutCache.cellSize = (boardWidth - layoutCache.gap * (GRID_SIZE + 1)) / GRID_SIZE;
@@ -43,14 +43,14 @@ function getTilePosition(r, c) {
 
 function buildGridBackground() {
     if (gridBackgroundBuilt) return;
-    
+
     updateLayoutCache();
     const { gap, cellSize } = layoutCache;
-    
-    // 清空并重建背景
+
+    // Clear and rebuild background
     const existingCells = boardEl.querySelectorAll('.grid-cell');
     existingCells.forEach(cell => cell.remove());
-    
+
     for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {
             const cell = document.createElement('div');
@@ -62,44 +62,44 @@ function buildGridBackground() {
             boardEl.appendChild(cell);
         }
     }
-    
+
     gridBackgroundBuilt = true;
 }
 
 /**
- * 创建方块 DOM 元素
+ * Create a tile DOM element
  */
 function createTileElement(id, value, r, c) {
     updateLayoutCache();
     const { cellSize } = layoutCache;
     const fontBase = cellSize * 0.4;
     const pos = getTilePosition(r, c);
-    
+
     const tile = document.createElement('div');
     tile.className = `tile tile-${value > 2048 ? 'super' : value}`;
     tile.dataset.id = id;
     tile.style.width = cellSize + 'px';
     tile.style.height = cellSize + 'px';
     tile.style.transform = `translate(${pos.left}px, ${pos.top}px)`;
-    
+
     const inner = document.createElement('div');
     inner.className = 'tile-inner';
     inner.textContent = value;
     inner.style.fontSize = (value >= 1024 ? fontBase * 0.85 : fontBase) + 'px';
     inner.style.lineHeight = cellSize + 'px';
-    
+
     tile.appendChild(inner);
-    
+
     return tile;
 }
 
 /**
- * 显示分数增加动画
+ * Show score increase animation
  */
 function showScoreIncrease(increase) {
     if (increase <= 0) return;
-    
-    // 创建浮动分数元素
+
+    // Create floating score element
     const floatEl = document.createElement('div');
     floatEl.className = 'score-increase';
     floatEl.textContent = `+${increase}`;
@@ -111,50 +111,50 @@ function showScoreIncrease(increase) {
         pointer-events: none;
         z-index: 100;
     `;
-    
-    // 获取分数元素的位置
+
+    // Get score element position
     const scoreRect = scoreEl.getBoundingClientRect();
     const appRect = document.getElementById('app').getBoundingClientRect();
-    
+
     floatEl.style.left = (scoreRect.left - appRect.left + scoreRect.width / 2) + 'px';
     floatEl.style.top = (scoreRect.top - appRect.top) + 'px';
-    
+
     document.getElementById('app').appendChild(floatEl);
-    
-    // 动画结束后移除
+
+    // Remove after animation ends
     setTimeout(() => {
         floatEl.remove();
     }, 400);
 }
 
 /**
- * 初始渲染（无动画）
+ * Initial render (no animation)
  */
 export function render() {
     scoreEl.textContent = gameState.score;
     bestEl.textContent = gameState.best;
-    
-    // 检测分数变化
+
+    // Detect score changes
     if (gameState.score > lastScore) {
         showScoreIncrease(gameState.score - lastScore);
     }
     lastScore = gameState.score;
-    
+
     buildGridBackground();
-    
-    // 收集当前 grid 中的所有方块 ID
+
+    // Collect all tile IDs currently on the grid
     const currentIds = new Set();
-    // 先批量收集数据（读操作）
+    // Batch collect data first (read operations)
     const updates = [];
     const creates = [];
-    
+
     for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {
             const cell = grid[r][c];
             if (cell === null) continue;
-            
+
             currentIds.add(cell.id);
-            
+
             if (tileElements.has(cell.id)) {
                 updates.push({ id: cell.id, value: cell.value, r, c });
             } else {
@@ -162,24 +162,24 @@ export function render() {
             }
         }
     }
-    
-    // 收集需要移除的方块
+
+    // Collect tiles to remove
     const toRemove = [];
     for (const [id] of tileElements.entries()) {
         if (!currentIds.has(id)) {
             toRemove.push(id);
         }
     }
-    
-    // 使用 rAF 批量执行 DOM 写操作
+
+    // Use rAF to batch DOM write operations
     requestAnimationFrame(() => {
-        // 移除不存在的方块
+        // Remove tiles that no longer exist
         for (const id of toRemove) {
             tileElements.get(id).remove();
             tileElements.delete(id);
         }
-        
-        // 更新已有方块
+
+        // Update existing tiles
         for (const { id, value, r, c } of updates) {
             const tile = tileElements.get(id);
             const pos = getTilePosition(r, c);
@@ -190,8 +190,8 @@ export function render() {
             }
             tile.className = `tile tile-${value > 2048 ? 'super' : value}`;
         }
-        
-        // 创建新方块
+
+        // Create new tiles
         for (const { id, value, r, c } of creates) {
             const tile = createTileElement(id, value, r, c);
             boardEl.appendChild(tile);
@@ -201,67 +201,67 @@ export function render() {
 }
 
 /**
- * 带动画的移动渲染
- * @param {Object} moveInfo - 移动信息 { moves, merges }
- * @param {Object} newTile - 新生成的方块 { id, value, r, c }
- * @param {Function} onDone - 动画完成后的回调
+ * Animated move rendering
+ * @param {Object} moveInfo - Move info { moves, merges }
+ * @param {Object} newTile - Newly spawned tile { id, value, r, c }
+ * @param {Function} onDone - Callback after animation completes
  */
 export function renderWithAnimation(moveInfo, newTile, onDone) {
-    // 检测分数变化
+    // Detect score changes
     if (gameState.score > lastScore) {
         showScoreIncrease(gameState.score - lastScore);
     }
     lastScore = gameState.score;
-    
+
     scoreEl.textContent = gameState.score;
     bestEl.textContent = gameState.best;
-    
+
     buildGridBackground();
-    
+
     const { moves, merges } = moveInfo;
-    
-    // 1. 移动所有方块到新位置（触发 CSS transition）
+
+    // 1. Move all tiles to new positions (trigger CSS transition)
     const movingTiles = [];
     for (const move of moves) {
         const tile = tileElements.get(move.id);
         if (!tile) continue;
-        
+
         const pos = getTilePosition(move.toRow, move.toCol);
         tile.style.transform = `translate(${pos.left}px, ${pos.top}px)`;
         movingTiles.push(tile);
     }
-    
-    // 2. 等待移动动画完成后，处理合并和新方块
+
+    // 2. After move animation completes, handle merges and new tiles
     const onMoveComplete = () => {
-        // 处理合并：源方块已滑到目标位置
-        // 对于每次合并，保留第一个源方块（变成合并值），隐藏第二个
+        // Handle merges: source tiles have slid to target position
+        // For each merge, keep the first source tile (becomes merged value), hide the second
         for (const merge of merges) {
-            // 找到参与合并的两个源方块 ID
-            const mergeMoves = moves.filter(m => 
+            // Find the two source tile IDs participating in the merge
+            const mergeMoves = moves.filter(m =>
                 m.toRow === merge.row && m.toCol === merge.col && m.merge
             );
-            
+
             if (mergeMoves.length >= 2) {
-                // 第一个源方块：更新为合并后的值，播放弹跳动画
+                // First source tile: update to merged value, play bounce animation
                 const firstTile = tileElements.get(mergeMoves[0].id);
                 if (firstTile) {
                     const inner = firstTile.querySelector('.tile-inner');
                     if (inner) {
                         inner.textContent = merge.value;
-                        // 更新字体大小
+                        // Update font size
                         updateLayoutCache();
                         const fontBase = layoutCache.cellSize * 0.4;
                         inner.style.fontSize = (merge.value >= 1024 ? fontBase * 0.85 : fontBase) + 'px';
                     }
-                    // 关键修复：不能用 className 赋值，会短暂移除 .tile 类
-                    // 导致 transition 属性丢失，inline transform 跳回 (0,0)
-                    // 用 classList 操作，始终保持 .tile 类存在
+                    // Key fix: don't use className assignment, it briefly removes .tile class
+                    // causing transition property loss and inline transform jumping back to (0,0)
+                    // Use classList operations to always keep .tile class present
                     firstTile.classList.remove('tile-2', 'tile-4', 'tile-8', 'tile-16', 'tile-32', 'tile-64', 'tile-128', 'tile-256', 'tile-512', 'tile-1024', 'tile-2048', 'tile-super');
                     firstTile.classList.add(`tile-${merge.value > 2048 ? 'super' : merge.value}`);
                     firstTile.classList.add('tile-merged');
                 }
-                
-                // 第二个源方块：隐藏并移除
+
+                // Second source tile: hide and remove
                 const secondTile = tileElements.get(mergeMoves[1].id);
                 if (secondTile) {
                     secondTile.remove();
@@ -269,31 +269,31 @@ export function renderWithAnimation(moveInfo, newTile, onDone) {
                 tileElements.delete(mergeMoves[1].id);
             }
         }
-        
-        // 创建新生成的方块
+
+        // Create newly spawned tile
         if (newTile && !tileElements.has(newTile.id)) {
             const tile = createTileElement(newTile.id, newTile.value, newTile.r, newTile.c);
             boardEl.appendChild(tile);
             tileElements.set(newTile.id, tile);
-            // 强制重排后再添加动画类，确保动画能触发
+            // Force reflow before adding animation class to ensure animation triggers
             requestAnimationFrame(() => {
                 tile.classList.add('tile-new');
             });
         }
-        
-        // 清理动画类（等待动画完成）
+
+        // Clean up animation classes (wait for animation to finish)
         setTimeout(() => {
             for (const tile of tileElements.values()) {
                 tile.classList.remove('tile-new', 'tile-merged');
             }
-            // 动画完成后调用回调
+            // Call callback after animation completes
             if (onDone) onDone();
         }, 300);
     };
-    
-    // 等待移动动画完成后处理合并和新方块
-    // 使用固定延迟（100ms 移动动画 + 余量），比 transitionend 更可靠
-    // transitionend 可能对同一元素多次触发（transform 的 x/y 分量），导致计数错乱
+
+    // Wait for move animation to complete, then handle merges and new tiles
+    // Use fixed delay (100ms move animation + margin), more reliable than transitionend
+    // transitionend may fire multiple times for the same element (transform x/y components), causing count errors
     setTimeout(onMoveComplete, 120);
 }
 
@@ -313,7 +313,7 @@ export function hideWin() {
     winMessageEl.classList.add('hidden');
 }
 
-// 监听窗口大小变化
+// Listen for window resize
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);

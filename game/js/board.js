@@ -1,9 +1,9 @@
-// ==================== 棋盘逻辑 ====================
+// ==================== Board Logic ====================
 
 import { GRID_SIZE, grid, gameState, saveBest, generateTileId, saveUndoState } from './data.js';
 
-// 在空格子中随机生成 2（90%）或 4（10%）
-// 返回新方块的 ID 和位置
+// Randomly spawn a 2 (90%) or 4 (10%) in an empty cell
+// Returns the new tile's ID and position
 export function spawnTile() {
     const empty = [];
     for (let r = 0; r < GRID_SIZE; r++) {
@@ -19,23 +19,23 @@ export function spawnTile() {
     return { id, value, r, c };
 }
 
-// 移动并合并一行（向左）
-// 返回移动轨迹信息
+// Slide and merge a row (to the left)
+// Returns movement trace info
 function slideRow(row, rowIdx, colIdx) {
-    const moves = []; // 记录每个方块的移动
-    const merges = []; // 记录合并的方块
-    
-    // 去掉 null
+    const moves = []; // Record each tile's movement
+    const merges = []; // Record merged tiles
+
+    // Remove nulls
     const filtered = row.filter(v => v !== null);
     const result = [];
-    
+
     for (let i = 0; i < filtered.length; i++) {
         if (i < filtered.length - 1 && filtered[i].value === filtered[i + 1].value) {
-            // 合并
+            // Merge
             const newValue = filtered[i].value * 2;
             gameState.score += newValue;
-            
-            // 第一个方块移动到合并位置，保留其 ID
+
+            // First tile moves to merge position, keeps its ID
             const mergeColIdx = result.length;
             moves.push({
                 id: filtered[i].id,
@@ -45,8 +45,8 @@ function slideRow(row, rowIdx, colIdx) {
                 toCol: mergeColIdx,
                 merge: true
             });
-            
-            // 第二个方块也移动到合并位置，然后消失
+
+            // Second tile also moves to merge position, then disappears
             moves.push({
                 id: filtered[i + 1].id,
                 fromRow: rowIdx,
@@ -56,14 +56,14 @@ function slideRow(row, rowIdx, colIdx) {
                 merge: true,
                 disappear: true
             });
-            
-            // 保留第一个方块的 ID，更新其 value
+
+            // Keep first tile's ID, update its value
             result.push({ id: filtered[i].id, value: newValue });
             merges.push({ id: filtered[i].id, row: rowIdx, col: mergeColIdx, value: newValue });
-            
-            i++; // 跳过被合并的方块
+
+            i++; // Skip the merged tile
         } else {
-            // 不合并，直接移动
+            // No merge, just move
             const newColIdx = result.length;
             moves.push({
                 id: filtered[i].id,
@@ -76,13 +76,13 @@ function slideRow(row, rowIdx, colIdx) {
             result.push(filtered[i]);
         }
     }
-    
+
     while (result.length < GRID_SIZE) result.push(null);
-    
+
     return { result, moves, merges };
 }
 
-// 旋转棋盘（用于处理不同方向）
+// Rotate the board (for handling different directions)
 function rotate(g, times) {
     let result = g.map(row => [...row]);
     for (let t = 0; t < times; t++) {
@@ -91,10 +91,10 @@ function rotate(g, times) {
     return result;
 }
 
-// 反向旋转坐标
+// Reverse rotate coordinates
 function reverseRotateCoord(r, c, times) {
-    // 正向旋转：(r,c) -> (c, GRID_SIZE-1-r)
-    // 反向旋转：(r,c) -> (GRID_SIZE-1-c, r)
+    // Forward rotation: (r,c) -> (c, GRID_SIZE-1-r)
+    // Reverse rotation: (r,c) -> (GRID_SIZE-1-c, r)
     let rr = r, cc = c;
     for (let t = 0; t < times; t++) {
         const temp = rr;
@@ -104,38 +104,38 @@ function reverseRotateCoord(r, c, times) {
     return { r: rr, c: cc };
 }
 
-// 指定方向移动
+// Move in a specified direction
 // direction: 0=up, 1=right, 2=down, 3=left
-// 返回移动轨迹信息
+// Returns movement trace info
 export function move(direction) {
     if (gameState.gameOver) return null;
-    
-    // 保存当前状态用于撤销
+
+    // Save current state for undo
     saveUndoState();
-    
+
     const oldGrid = grid.map(row => row.map(cell => cell ? { ...cell } : null));
-    
-    // 将目标方向旋转为"向左"：0→3次, 1→2次, 2→1次, 3→0次
+
+    // Rotate target direction to "left": 0->3, 1->2, 2->1, 3->0
     const rotations = [3, 2, 1, 0][direction];
     let rotated = rotate(grid, rotations);
-    
-    // 记录每行的原始列索引
+
+    // Record original column indices for each row
     const allMoves = [];
     const allMerges = [];
-    
+
     for (let r = 0; r < GRID_SIZE; r++) {
         const row = rotated[r];
-        // 获取原始列索引
+        // Get original column indices
         const colIdx = [];
         for (let c = 0; c < GRID_SIZE; c++) {
             const origCoord = reverseRotateCoord(r, c, rotations);
             colIdx.push(origCoord.c);
         }
-        
+
         const { result, moves, merges } = slideRow(row, r, colIdx);
         rotated[r] = result;
-        
-        // 转换坐标回原始方向
+
+        // Convert coordinates back to original direction
         for (const m of moves) {
             const fromCoord = reverseRotateCoord(m.fromRow, m.fromCol, rotations);
             const toCoord = reverseRotateCoord(m.toRow, m.toCol, rotations);
@@ -149,54 +149,54 @@ export function move(direction) {
                 disappear: m.disappear
             });
         }
-        
+
         for (const m of merges) {
             const coord = reverseRotateCoord(m.row, m.col, rotations);
             allMerges.push({ id: m.id, row: coord.r, col: coord.c, value: m.value });
         }
     }
-    
-    // 旋转回来
+
+    // Rotate back
     const newGrid = rotate(rotated, (4 - rotations) % 4);
     for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {
             grid[r][c] = newGrid[r][c];
         }
     }
-    
+
     saveBest();
-    
-    // 检查是否有变化
+
+    // Check if anything changed
     const changed = !grid.every((row, r) => row.every((cell, c) => {
         const oldCell = oldGrid[r][c];
         if (cell === null && oldCell === null) return true;
         if (cell === null || oldCell === null) return false;
         return cell.id === oldCell.id && cell.value === oldCell.value;
     }));
-    
+
     if (!changed) return null;
-    
+
     return {
         moves: allMoves,
         merges: allMerges
     };
 }
 
-// 检查是否还能移动
+// Check if any moves are still possible
 export function canMove() {
     for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {
-            // 检查空格子
+            // Check empty cell
             if (grid[r][c] === null) return true;
-            
+
             const currentVal = grid[r][c].value;
-            
-            // 检查右边是否可以合并
+
+            // Check if right neighbor can merge
             if (c < GRID_SIZE - 1 && grid[r][c + 1] !== null) {
                 if (currentVal === grid[r][c + 1].value) return true;
             }
-            
-            // 检查下边是否可以合并
+
+            // Check if bottom neighbor can merge
             if (r < GRID_SIZE - 1 && grid[r + 1][c] !== null) {
                 if (currentVal === grid[r + 1][c].value) return true;
             }
@@ -205,7 +205,7 @@ export function canMove() {
     return false;
 }
 
-// 检查是否达到 2048
+// Check if reached 2048
 export function checkWin() {
     for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {

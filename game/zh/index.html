@@ -6,22 +6,22 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>2048</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div id="app">
         <header>
             <h1>2048</h1>
             <div class="header-right">
-                <div class="score-box" role="status" aria-live="polite" aria-label="Current score">
-                    <div class="score-label">SCORE</div>
+                <div class="score-box" role="status" aria-live="polite" aria-label="当前分数">
+                    <div class="score-label">分数</div>
                     <div class="score-value" id="score">0</div>
                 </div>
-                <div class="score-box" role="status" aria-live="polite" aria-label="Best score">
-                    <div class="score-label">BEST</div>
+                <div class="score-box" role="status" aria-live="polite" aria-label="最高分">
+                    <div class="score-label">最高</div>
                     <div class="score-value" id="best">0</div>
                 </div>
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <button id="theme-toggle" class="theme-toggle" aria-label="切换深色模式">
                     <span class="theme-icon">🌙</span>
                 </button>
             </div>
@@ -34,8 +34,8 @@
             </div>
         </div>
         <div class="game-hint">方向键 / WASD 或滑动屏幕</div>
-        <div id="board-container" role="application" aria-label="2048 game board">
-            <div id="board" aria-label="Game grid"></div>
+        <div id="board-container" role="application" aria-label="2048 游戏棋盘">
+            <div id="board" aria-label="游戏网格"></div>
             <div id="game-over" class="hidden" role="alert" aria-live="assertive">
                 <div class="overlay">
                     <div class="message">游戏结束！</div>
@@ -53,6 +53,6 @@
             </div>
         </div>
     </div>
-    <script type="module" src="js/main.js?v=5"></script>
+    <script type="module" src="../js/main.js?v=7"></script>
 </body>
 </html>

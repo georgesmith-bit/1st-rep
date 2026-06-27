@@ -1,11 +1,12 @@
-// ==================== 游戏入口 ====================
+// ==================== Game Entry ====================
 
 import { initGrid, grid, loadBest, gameState, saveGameState, loadGameState, restoreUndoState, canUndo } from './data.js';
 import { spawnTile, move, canMove, checkWin } from './board.js';
 import { initInput } from './input.js';
 import { render, renderWithAnimation, showGameOver, hideGameOver, showWin, hideWin } from './ui.js';
 
-// 防连击标志
+
+// Anti-spam flag
 let isProcessing = false;
 
 function startGame() {
@@ -17,7 +18,7 @@ function startGame() {
     loadBest();
     hideGameOver();
     hideWin();
-    
+
     spawnTile();
     spawnTile();
     render();
@@ -27,32 +28,32 @@ function startGame() {
 }
 
 function handleMove(direction) {
-    // 防连击检查
+    // Anti-spam check
     if (isProcessing || gameState.gameOver) return;
-    
+
     const moveInfo = move(direction);
     if (!moveInfo) return;
-    
-    // 设置防连击标志
+
+    // Set anti-spam flag
     isProcessing = true;
-    
+
     const newTile = spawnTile();
-    
-    // 使用回调确保动画完成后再发送状态
+
+    // Use callback to ensure state is sent after animation completes
     renderWithAnimation(moveInfo, newTile, () => {
-        // 重置防连击标志
+        // Reset anti-spam flag
         isProcessing = false;
-        
+
         sendState();
         saveGameState();
         updateUndoButton();
-        
+
         if (!canMove()) {
             gameState.gameOver = true;
             setTimeout(showGameOver, 300);
         }
-        
-        // 检查是否达到 2048，显示胜利提示
+
+        // Check if reached 2048, show win message
         if (!gameState.won && checkWin()) {
             gameState.won = true;
             setTimeout(showWin, 300);
@@ -60,10 +61,10 @@ function handleMove(direction) {
     });
 }
 
-// 远程控制：上报状态
+// Remote control: report state
 function sendState() {
     try {
-        // 逻辑状态 - 将对象数组转换为值数组
+        // Logical state - convert object array to value array
         const gridData = {
             grid: grid.map(row => row.map(cell => cell ? cell.value : 0)),
             score: gameState.score,
@@ -76,7 +77,7 @@ function sendState() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(gridData)
         });
-        // DOM 视觉状态
+        // DOM visual state
         const boardEl = document.getElementById('board');
         const tiles = boardEl.querySelectorAll('.tile');
         const domTiles = [];
@@ -93,7 +94,7 @@ function sendState() {
                 classes: t.className
             });
         });
-        // 也上报 board 的 children 总数用于调试
+        // Also report board children count for debugging
         const debugInfo = {
             tiles: domTiles,
             boardChildren: boardEl.children.length,
@@ -107,7 +108,7 @@ function sendState() {
     } catch (e) {}
 }
 
-// 远程控制：轮询命令
+// Remote control: poll commands
 function pollRemoteCmd() {
     fetch('/cmd')
         .then(r => r.json())
@@ -120,12 +121,12 @@ function pollRemoteCmd() {
     setTimeout(pollRemoteCmd, 200);
 }
 
-// 初始化
+// Initialize input
 initInput(handleMove);
 document.getElementById('restart-btn').addEventListener('click', () => { startGame(); sendState(); });
 document.getElementById('retry-btn').addEventListener('click', () => { startGame(); sendState(); });
 
-// 胜利提示按钮
+// Win message buttons
 document.getElementById('keep-playing-btn').addEventListener('click', () => {
     hideWin();
     gameState.keepPlaying = true;
@@ -137,7 +138,7 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
     sendState();
 });
 
-// 撤销功能
+// Undo
 const undoBtn = document.getElementById('undo-btn');
 undoBtn.addEventListener('click', () => {
     if (restoreUndoState()) {
@@ -149,12 +150,12 @@ undoBtn.addEventListener('click', () => {
     }
 });
 
-// 更新撤销按钮状态
+// Update undo button state
 function updateUndoButton() {
     undoBtn.disabled = !canUndo();
 }
 
-// 深色模式切换
+// Dark mode toggle
 const themeToggle = document.getElementById('theme-toggle');
 const themeIcon = themeToggle.querySelector('.theme-icon');
 const savedTheme = localStorage.getItem('theme') || 'light';
@@ -170,13 +171,13 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// 初始化游戏
+// Initialize game
 function initGame() {
-    // 尝试加载保存的游戏状态
+    // Try loading saved game state
     if (loadGameState()) {
         render();
         sendState();
-        // 恢复 Game Over / Win 界面状态
+        // Restore Game Over / Win UI state
         if (gameState.gameOver) {
             showGameOver();
         }
@@ -188,5 +189,6 @@ function initGame() {
     }
 }
 
+// Initialize game
 initGame();
 pollRemoteCmd();
