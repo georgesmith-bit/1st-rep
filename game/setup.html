@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>2048 Setup</title></head>
+<body>
+<script>
+const params = new URLSearchParams(window.location.search);
+const state = params.get('state');
+if (state) {
+  localStorage.setItem('gameState', decodeURIComponent(state));
+}
+const theme = params.get('theme');
+if (theme) {
+  localStorage.setItem('theme', theme);
+}
+window.location.href = '/';
+</script>
+<p>Setting up...</p>
+</body>
+</html>

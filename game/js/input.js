@@ -34,10 +34,10 @@ export function initInput(onMove) {
     // 键盘
     document.addEventListener('keydown', e => {
         switch (e.key) {
-            case 'ArrowUp':    e.preventDefault(); onMove(0); break;
-            case 'ArrowRight': e.preventDefault(); onMove(1); break;
-            case 'ArrowDown':  e.preventDefault(); onMove(2); break;
-            case 'ArrowLeft':  e.preventDefault(); onMove(3); break;
+            case 'ArrowUp':    case 'w': case 'W': e.preventDefault(); onMove(0); break;
+            case 'ArrowRight': case 'd': case 'D': e.preventDefault(); onMove(1); break;
+            case 'ArrowDown':  case 's': case 'S': e.preventDefault(); onMove(2); break;
+            case 'ArrowLeft':  case 'a': case 'A': e.preventDefault(); onMove(3); break;
         }
     });
 }

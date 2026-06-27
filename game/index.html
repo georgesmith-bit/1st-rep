@@ -12,29 +12,47 @@
     <div id="app">
         <header>
             <h1>2048</h1>
-            <div class="score-box">
-                <div class="score-label">SCORE</div>
-                <div class="score-value" id="score">0</div>
-            </div>
-            <div class="score-box">
-                <div class="score-label">BEST</div>
-                <div class="score-value" id="best">0</div>
+            <div class="header-right">
+                <div class="score-box" role="status" aria-live="polite" aria-label="Current score">
+                    <div class="score-label">SCORE</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="score-box" role="status" aria-live="polite" aria-label="Best score">
+                    <div class="score-label">BEST</div>
+                    <div class="score-value" id="best">0</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
             </div>
         </header>
         <div class="game-intro">
-            <span>Join the tiles, get to <strong>2048</strong>!</span>
-            <button id="restart-btn">New Game</button>
+            <span>滑动合并，挑战高分！</span>
+            <div class="buttons">
+                <button id="undo-btn" aria-label="撤销上一步">撤销</button>
+                <button id="restart-btn" aria-label="开始新游戏">新游戏</button>
+            </div>
         </div>
-        <div id="board-container">
-            <div id="board"></div>
-        </div>
-        <div id="game-over" class="hidden">
-            <div class="overlay">
-                <div class="message">Game Over!</div>
-                <button id="retry-btn">Try Again</button>
+        <div class="game-hint">方向键 / WASD 或滑动屏幕</div>
+        <div id="board-container" role="application" aria-label="2048 game board">
+            <div id="board" aria-label="Game grid"></div>
+            <div id="game-over" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">游戏结束！</div>
+                    <button id="retry-btn" aria-label="重新开始">重新开始</button>
+                </div>
+            </div>
+            <div id="win-message" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">你赢了！</div>
+                    <div class="win-buttons">
+                        <button id="keep-playing-btn" aria-label="继续游戏">继续游戏</button>
+                        <button id="new-game-btn" aria-label="开始新游戏">新游戏</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/main.js?v=5"></script>
 </body>
 </html>
