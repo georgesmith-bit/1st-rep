@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /server.js
+Disallow: /cmd
+Disallow: /state
+
+Sitemap: https://live2048.com/sitemap.xml
