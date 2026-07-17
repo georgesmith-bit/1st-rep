@@ -4,12 +4,14 @@ import { initGrid, grid, loadBest, gameState, saveGameState, loadGameState, rest
 import { spawnTile, move, canMove, checkWin } from './board.js';
 import { initInput } from './input.js';
 import { render, renderWithAnimation, showGameOver, hideGameOver, showWin, hideWin } from './ui.js';
+import { trackGameStart, trackTileMove, trackGameOver, trackGameWin, trackUndo, trackKeepPlaying, trackNewGameAfterWin, trackReturnVisit, trackThemeToggle, trackMilestone } from './analytics.js';
 
 
 // Anti-spam flag
 let isProcessing = false;
 
 function startGame() {
+    trackGameStart();
     initGrid();
     gameState.score = 0;
     gameState.gameOver = false;
@@ -34,6 +36,8 @@ function handleMove(direction) {
     const moveInfo = move(direction);
     if (!moveInfo) return;
 
+    trackTileMove(direction);
+
     // Set anti-spam flag
     isProcessing = true;
 
@@ -50,12 +54,14 @@ function handleMove(direction) {
 
         if (!canMove()) {
             gameState.gameOver = true;
+            trackGameOver(gameState.score, moveCount);
             setTimeout(showGameOver, 300);
         }
 
         // Check if reached 2048, show win message
         if (!gameState.won && checkWin()) {
             gameState.won = true;
+            trackGameWin(gameState.score);
             setTimeout(showWin, 300);
         }
     });
@@ -130,10 +136,12 @@ document.getElementById('retry-btn').addEventListener('click', () => { startGame
 document.getElementById('keep-playing-btn').addEventListener('click', () => {
     hideWin();
     gameState.keepPlaying = true;
+    trackKeepPlaying(gameState.score);
 });
 
 document.getElementById('new-game-btn').addEventListener('click', () => {
     hideWin();
+    trackNewGameAfterWin();
     startGame();
     sendState();
 });
@@ -142,6 +150,7 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
 const undoBtn = document.getElementById('undo-btn');
 undoBtn.addEventListener('click', () => {
     if (restoreUndoState()) {
+        trackUndo();
         hideGameOver();
         render();
         sendState();
@@ -169,12 +178,14 @@ themeToggle.addEventListener('click', () => {
     const isDark = document.body.classList.toggle('dark-mode');
     themeIcon.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    trackThemeToggle(isDark ? 'dark' : 'light');
 });
 
 // Initialize game
 function initGame() {
     // Try loading saved game state
     if (loadGameState()) {
+        trackReturnVisit();
         render();
         sendState();
         // Restore Game Over / Win UI state

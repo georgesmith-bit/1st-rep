@@ -1,6 +1,7 @@
 // ==================== Board Logic ====================
 
 import { GRID_SIZE, grid, gameState, saveBest, generateTileId, saveUndoState } from './data.js';
+import { trackTileMerge, trackMilestone } from './analytics.js';
 
 // Randomly spawn a 2 (90%) or 4 (10%) in an empty cell
 // Returns the new tile's ID and position
@@ -34,6 +35,10 @@ function slideRow(row, rowIdx, colIdx) {
             // Merge
             const newValue = filtered[i].value * 2;
             gameState.score += newValue;
+            trackTileMerge(newValue, 1);
+            if (newValue >= 512 && [512, 1024, 2048, 4096].includes(newValue)) {
+                trackMilestone(newValue);
+            }
 
             // First tile moves to merge position, keeps its ID
             const mergeColIdx = result.length;
