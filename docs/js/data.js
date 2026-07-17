@@ -15,6 +15,7 @@ export let grid = [];
 
 // Tile ID counter
 let nextTileId = 1;
+export { nextTileId };
 
 // Undo state storage
 let undoState = null;
@@ -32,11 +33,11 @@ export function initGrid() {
 }
 
 // Save current state for undo
-export function saveUndoState() {
+export function saveUndoState(customGrid, customScore, customNextId) {
     undoState = {
-        grid: grid.map(row => row.map(cell => cell ? { ...cell } : null)),
-        score: gameState.score,
-        nextTileId: nextTileId,
+        grid: (customGrid || grid).map(row => row.map(cell => cell ? { ...cell } : null)),
+        score: customScore !== undefined ? customScore : gameState.score,
+        nextTileId: customNextId !== undefined ? customNextId : nextTileId,
         gameOver: gameState.gameOver,
         won: gameState.won
     };

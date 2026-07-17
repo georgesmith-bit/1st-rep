@@ -1,6 +1,6 @@
 // ==================== Board Logic ====================
 
-import { GRID_SIZE, grid, gameState, saveBest, generateTileId, saveUndoState } from './data.js';
+import { GRID_SIZE, grid, gameState, saveBest, generateTileId, saveUndoState, nextTileId } from './data.js';
 import { trackTileMerge, trackMilestone } from './analytics.js';
 
 // Randomly spawn a 2 (90%) or 4 (10%) in an empty cell
@@ -116,6 +116,8 @@ export function move(direction) {
     if (gameState.gameOver) return null;
 
     const oldGrid = grid.map(row => row.map(cell => cell ? { ...cell } : null));
+    const oldScore = gameState.score;
+    const oldNextId = nextTileId;
 
     // Rotate target direction to "left": 0->3, 1->2, 2->1, 3->0
     const rotations = [3, 2, 1, 0][direction];
@@ -178,8 +180,8 @@ export function move(direction) {
 
     if (!changed) return null;
 
-    // Save current state for undo (after confirming the move actually changed something)
-    saveUndoState();
+    // Save pre-move state for undo
+    saveUndoState(oldGrid, oldScore, oldNextId);
 
     return {
         moves: allMoves,
