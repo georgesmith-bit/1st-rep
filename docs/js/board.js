@@ -115,9 +115,6 @@ function reverseRotateCoord(r, c, times) {
 export function move(direction) {
     if (gameState.gameOver) return null;
 
-    // Save current state for undo
-    saveUndoState();
-
     const oldGrid = grid.map(row => row.map(cell => cell ? { ...cell } : null));
 
     // Rotate target direction to "left": 0->3, 1->2, 2->1, 3->0
@@ -180,6 +177,9 @@ export function move(direction) {
     }));
 
     if (!changed) return null;
+
+    // Save current state for undo (after confirming the move actually changed something)
+    saveUndoState();
 
     return {
         moves: allMoves,

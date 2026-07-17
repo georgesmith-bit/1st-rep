@@ -1,6 +1,6 @@
 // ==================== UI Rendering ====================
 
-import { GRID_SIZE, grid, gameState } from './data.js';
+import { GRID_SIZE, grid, gameState, formatScore } from './data.js';
 
 const boardEl = document.getElementById('board');
 const scoreEl = document.getElementById('score');
@@ -131,8 +131,8 @@ function showScoreIncrease(increase) {
  * Initial render (no animation)
  */
 export function render() {
-    scoreEl.textContent = gameState.score;
-    bestEl.textContent = gameState.best;
+    scoreEl.textContent = formatScore(gameState.score);
+    bestEl.textContent = formatScore(gameState.best);
 
     // Detect score changes
     if (gameState.score > lastScore) {
@@ -213,8 +213,8 @@ export function renderWithAnimation(moveInfo, newTile, onDone) {
     }
     lastScore = gameState.score;
 
-    scoreEl.textContent = gameState.score;
-    bestEl.textContent = gameState.best;
+    scoreEl.textContent = formatScore(gameState.score);
+    bestEl.textContent = formatScore(gameState.best);
 
     buildGridBackground();
 

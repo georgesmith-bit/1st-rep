@@ -108,3 +108,11 @@ export function loadGameState() {
         return false;
     }
 }
+
+// Format score with k/m/b abbreviations
+export function formatScore(score) {
+    if (score < 1000) return String(score);
+    if (score < 1000000) return (score / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    if (score < 1000000000) return (score / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
+    return (score / 1000000000).toFixed(1).replace(/\.0$/, '') + 'b';
+}

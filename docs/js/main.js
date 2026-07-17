@@ -24,7 +24,6 @@ function startGame() {
     spawnTile();
     spawnTile();
     render();
-    sendState();
     saveGameState();
     updateUndoButton();
 }
@@ -48,7 +47,6 @@ function handleMove(direction) {
         // Reset anti-spam flag
         isProcessing = false;
 
-        sendState();
         saveGameState();
         updateUndoButton();
 
@@ -67,70 +65,18 @@ function handleMove(direction) {
     });
 }
 
-// Remote control: report state
-function sendState() {
-    try {
-        // Logical state - convert object array to value array
-        const gridData = {
-            grid: grid.map(row => row.map(cell => cell ? cell.value : 0)),
-            score: gameState.score,
-            best: gameState.best,
-            gameOver: gameState.gameOver,
-            won: gameState.won
-        };
-        fetch('/state', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(gridData)
-        });
-        // DOM visual state
-        const boardEl = document.getElementById('board');
-        const tiles = boardEl.querySelectorAll('.tile');
-        const domTiles = [];
-        tiles.forEach(t => {
-            const [x, y] = (t.style.left && t.style.top)
-                ? [parseInt(t.style.left), parseInt(t.style.top)]
-                : t.style.transform
-                    ? t.style.transform.match(/translate\((\d+)px,\s*(\d+)px\)/).slice(1).map(Number)
-                    : [0, 0];
-            domTiles.push({
-                val: parseInt(t.textContent) || 0,
-                left: parseInt(t.style.left) || 0,
-                top: parseInt(t.style.top) || 0,
-                classes: t.className
-            });
-        });
-        // Also report board children count for debugging
-        const debugInfo = {
-            tiles: domTiles,
-            boardChildren: boardEl.children.length,
-            boardHTML: boardEl.children.length
-        };
-        fetch('/dom', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(debugInfo)
-        });
-    } catch (e) {}
-}
-
-// Remote control: poll commands
-function pollRemoteCmd() {
-    fetch('/cmd')
-        .then(r => r.json())
-        .then(data => {
-            if (data.cmd !== null && data.cmd !== undefined) {
-                handleMove(data.cmd);
-            }
-        })
-        .catch(() => {});
-    setTimeout(pollRemoteCmd, 200);
-}
-
 // Initialize input
 initInput(handleMove);
-document.getElementById('restart-btn').addEventListener('click', () => { startGame(); sendState(); });
-document.getElementById('retry-btn').addEventListener('click', () => { startGame(); sendState(); });
+
+function confirmNewGame(callback) {
+    if (gameState.score > 0 && !gameState.gameOver) {
+        if (!confirm('Start a new game? Current progress will be lost.')) return;
+    }
+    callback();
+}
+
+document.getElementById('restart-btn').addEventListener('click', () => { confirmNewGame(() => { startGame(); }); });
+document.getElementById('retry-btn').addEventListener('click', () => { startGame(); });
 
 // Win message buttons
 document.getElementById('keep-playing-btn').addEventListener('click', () => {
@@ -143,7 +89,6 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
     hideWin();
     trackNewGameAfterWin();
     startGame();
-    sendState();
 });
 
 // Undo
@@ -153,7 +98,6 @@ undoBtn.addEventListener('click', () => {
         trackUndo();
         hideGameOver();
         render();
-        sendState();
         saveGameState();
         updateUndoButton();
     }
@@ -187,7 +131,6 @@ function initGame() {
     if (loadGameState()) {
         trackReturnVisit();
         render();
-        sendState();
         // Restore Game Over / Win UI state
         if (gameState.gameOver) {
             showGameOver();
@@ -202,4 +145,3 @@ function initGame() {
 
 // Initialize game
 initGame();
-pollRemoteCmd();
