@@ -205,6 +205,8 @@ export function render() {
                 tile.style.transform = `translate(${srcPos.left}px, ${srcPos.top}px)`;
                 boardEl.appendChild(tile);
                 tileElements.set(id, tile);
+                // Add spawn animation for the appearing tile
+                tile.classList.add('tile-new');
                 // On next frame, move to final position (triggers CSS transition)
                 requestAnimationFrame(() => {
                     const finalPos = getTilePosition(r, c);
@@ -215,6 +217,12 @@ export function render() {
                 tileElements.set(id, tile);
             }
         }
+        // Clean up tile-new classes after animation
+        setTimeout(() => {
+            for (const tile of tileElements.values()) {
+                tile.classList.remove('tile-new');
+            }
+        }, 400);
     });
 }
 
