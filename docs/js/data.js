@@ -33,14 +33,20 @@ export function initGrid() {
 }
 
 // Save current state for undo
-export function saveUndoState(customGrid, customScore, customNextId) {
+export function saveUndoState(customGrid, customScore, customNextId, mergeSources) {
     undoState = {
         grid: (customGrid || grid).map(row => row.map(cell => cell ? { ...cell } : null)),
         score: customScore !== undefined ? customScore : gameState.score,
         nextTileId: customNextId !== undefined ? customNextId : nextTileId,
         gameOver: gameState.gameOver,
-        won: gameState.won
+        won: gameState.won,
+        mergeSources: mergeSources || []  // [{tileId, fromRow, fromCol}]
     };
+}
+
+// Get merge source positions for undo animation
+export function getUndoMergeSources() {
+    return undoState ? (undoState.mergeSources || []) : [];
 }
 
 // Restore undo state

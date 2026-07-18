@@ -1,6 +1,6 @@
 // ==================== UI Rendering ====================
 
-import { GRID_SIZE, grid, gameState, formatScore } from './data.js';
+import { GRID_SIZE, grid, gameState, formatScore, getUndoMergeSources } from './data.js';
 
 const boardEl = document.getElementById('board');
 const scoreEl = document.getElementById('score');
@@ -192,10 +192,28 @@ export function render() {
         }
 
         // Create new tiles
+        const mergeSources = getUndoMergeSources();
         for (const { id, value, r, c } of creates) {
             const tile = createTileElement(id, value, r, c);
-            boardEl.appendChild(tile);
-            tileElements.set(id, tile);
+            
+            // If this tile was merged away in the previous move, animate it
+            // from the merge position back to its original position on undo
+            const mergeInfo = mergeSources.find(m => m.tileId === id);
+            if (mergeInfo) {
+                const srcPos = getTilePosition(mergeInfo.fromRow, mergeInfo.fromCol);
+                // Temporarily place at merge position
+                tile.style.transform = `translate(${srcPos.left}px, ${srcPos.top}px)`;
+                boardEl.appendChild(tile);
+                tileElements.set(id, tile);
+                // On next frame, move to final position (triggers CSS transition)
+                requestAnimationFrame(() => {
+                    const finalPos = getTilePosition(r, c);
+                    tile.style.transform = `translate(${finalPos.left}px, ${finalPos.top}px)`;
+                });
+            } else {
+                boardEl.appendChild(tile);
+                tileElements.set(id, tile);
+            }
         }
     });
 }
