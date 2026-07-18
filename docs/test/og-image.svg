@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#faf8ef"/>
-  <rect x="50" y="50" width="1100" height="530" rx="20" fill="#edc22e"/>
-  <text x="600" y="320" font-family="Arial,sans-serif" font-size="140" font-weight="bold" fill="#776e65" text-anchor="middle">2048</text>
-  <text x="600" y="440" font-family="Arial,sans-serif" font-size="40" fill="#776e65" text-anchor="middle">Play Online Free · Merge Tiles Puzzle</text>
-  <text x="600" y="540" font-family="Arial,sans-serif" font-size="30" fill="#9e9488" text-anchor="middle">live2048.com</text>
-</svg>
