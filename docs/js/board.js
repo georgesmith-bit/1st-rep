@@ -180,15 +180,8 @@ export function move(direction) {
 
     if (!changed) return null;
 
-    // Extract merge sources for undo animation
-    // When tiles merge, the consumed tile's DOM is removed. On undo,
-    // we need to know where to animate FROM so the tile doesn't pop in.
-    const mergeSources = allMoves
-        .filter(m => m.disappear)
-        .map(m => ({ tileId: m.id, fromRow: m.toRow, fromCol: m.toCol }));
-
     // Save pre-move state for undo
-    saveUndoState(oldGrid, oldScore, oldNextId, mergeSources);
+    saveUndoState(oldGrid, oldScore, oldNextId);
 
     return {
         moves: allMoves,
