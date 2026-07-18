@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Chơi 2048 online miễn phí! Trượt và gộp các ô số, đạt 2048, phá kỷ lục. Không cần tải, chơi trên điện thoại và máy tính.">
+    <meta property="og:title" content="2048 Game - Chơi Online Miễn Phí">
+    <meta property="og:description" content="Trượt và gộp để đạt 2048! Game giải đố kinh điển, miễn phí trên trình duyệt.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://live2048.com/vi/">
+    <meta property="og:image" content="https://live2048.com/og-image.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="2048 Game - Chơi Online Miễn Phí">
+    <meta name="twitter:description" content="Trượt và gộp để đạt 2048! Game giải đố miễn phí.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="canonical" href="https://live2048.com/vi/">
+    <link rel="alternate" hreflang="en" href="https://live2048.com/en/">
+    <link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/">
+    <link rel="alternate" hreflang="vi" href="https://live2048.com/vi/">
+    <link rel="alternate" hreflang="x-default" href="https://live2048.com/en/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>2048 Game - Chơi Online Miễn Phí | Game Xếp Hình Số</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S0NZ96NCB1');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["SoftwareApplication", "VideoGame"],
+      "name": "2048 Game",
+      "description": "Chơi 2048 online miễn phí! Trượt và gộp các ô số, đạt 2048, phá kỷ lục.",
+      "url": "https://live2048.com/vi/",
+      "image": "https://live2048.com/og-image.svg",
+      "operatingSystem": "Web Browser",
+      "applicationCategory": "GameApplication",
+      "playMode": "SinglePlayer",
+      "genre": ["Puzzle", "Casual"],
+      "inLanguage": ["vi", "en", "zh-CN"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "ratingCount": "128"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Live2048"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>2048</h1>
+            <div class="header-right">
+                <div class="score-box" role="status" aria-live="polite" aria-label="Điểm hiện tại">
+                    <div class="score-label">ĐIỂM</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="score-box" role="status" aria-live="polite" aria-label="Điểm cao nhất">
+                    <div class="score-label">CAO NHẤT</div>
+                    <div class="score-value" id="best">0</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Chuyển đổi chế độ tối">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+        <div class="game-intro">
+            <span>Trượt và gộp để đạt 2048!</span>
+            <div class="buttons">
+                <button id="undo-btn" aria-label="Hoàn tác bước trước">Hoàn tác</button>
+                <button id="restart-btn" aria-label="Bắt đầu trò chơi mới">Mới</button>
+            </div>
+        </div>
+        <div class="game-hint">Phím mũi tên / WASD hoặc vuốt để chơi</div>
+        <div id="board-container" role="application" aria-label="Bàn chơi 2048">
+            <div id="board" aria-label="Lưới trò chơi"></div>
+            <div id="game-over" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">Kết thúc!</div>
+                    <button id="retry-btn" aria-label="Thử lại">Thử lại</button>
+                </div>
+            </div>
+            <div id="win-message" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">Bạn thắng!</div>
+                    <div class="win-buttons">
+                        <button id="keep-playing-btn" aria-label="Tiếp tục chơi">Chơi tiếp</button>
+                        <button id="new-game-btn" aria-label="Bắt đầu trò chơi mới">Mới</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../js/main.js?v=11"></script>
+</body>
+</html>

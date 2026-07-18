@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="在线免费玩2048游戏！滑动合并数字方块，挑战2048，打破最高分。免下载，手机电脑都能玩。">
+    <meta property="og:title" content="2048 游戏 - 在线免费玩">
+    <meta property="og:description" content="滑动合并，挑战高分！经典数字益智游戏，免费在线畅玩。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://live2048.com/zh/">
+    <meta property="og:image" content="https://live2048.com/og-image.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="2048 游戏 - 在线免费玩">
+    <meta name="twitter:description" content="滑动合并，挑战高分！免费在线益智游戏。">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="canonical" href="https://live2048.com/zh/">
+    <link rel="alternate" hreflang="en" href="https://live2048.com/en/">
+    <link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/">
+    <link rel="alternate" hreflang="vi" href="https://live2048.com/vi/">
+    <link rel="alternate" hreflang="x-default" href="https://live2048.com/en/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>2048 游戏 - 在线免费玩 | 数字合并益智游戏</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S0NZ96NCB1');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["SoftwareApplication", "VideoGame"],
+      "name": "2048 游戏",
+      "description": "在线免费玩2048游戏！滑动合并数字方块，挑战2048，打破最高分。",
+      "url": "https://live2048.com/zh/",
+      "image": "https://live2048.com/og-image.svg",
+      "operatingSystem": "Web Browser",
+      "applicationCategory": "GameApplication",
+      "playMode": "SinglePlayer",
+      "genre": ["Puzzle", "Casual"],
+      "inLanguage": ["zh-CN", "en", "vi"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "ratingCount": "128"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Live2048"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>2048</h1>
+            <div class="header-right">
+                <div class="score-box" role="status" aria-live="polite" aria-label="当前分数">
+                    <div class="score-label">分数</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="score-box" role="status" aria-live="polite" aria-label="最高分">
+                    <div class="score-label">最高</div>
+                    <div class="score-value" id="best">0</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="切换深色模式">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+        <div class="game-intro">
+            <span>滑动合并，挑战高分！</span>
+            <div class="buttons">
+                <button id="undo-btn" aria-label="撤销上一步">撤销</button>
+                <button id="restart-btn" aria-label="开始新游戏">新游戏</button>
+            </div>
+        </div>
+        <div class="game-hint">方向键 / WASD 或滑动屏幕</div>
+        <div id="board-container" role="application" aria-label="2048 游戏棋盘">
+            <div id="board" aria-label="游戏网格"></div>
+            <div id="game-over" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">游戏结束！</div>
+                    <button id="retry-btn" aria-label="重新开始">重新开始</button>
+                </div>
+            </div>
+            <div id="win-message" class="hidden" role="alert" aria-live="assertive">
+                <div class="overlay">
+                    <div class="message">你赢了！</div>
+                    <div class="win-buttons">
+                        <button id="keep-playing-btn" aria-label="继续游戏">继续游戏</button>
+                        <button id="new-game-btn" aria-label="开始新游戏">新游戏</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../js/main.js?v=11"></script>
+</body>
+</html>
