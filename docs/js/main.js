@@ -102,33 +102,31 @@ if (isDailyModeAvailable()) {
     
     const classicBtn = document.createElement('button');
     classicBtn.textContent = 'Classic';
-    classicBtn.className = 'btn';
-    classicBtn.style.cssText = 'padding:6px 16px;border:none;border-radius:4px;font-size:13px;font-weight:bold;cursor:pointer;background:#8f7a66;color:white';
+    classicBtn.className = 'btn mode-btn active';
     
     const dailyBtn = document.createElement('button');
     dailyBtn.textContent = 'Daily';
-    dailyBtn.className = 'btn';
-    dailyBtn.style.cssText = 'padding:6px 16px;border:none;border-radius:4px;font-size:13px;font-weight:bold;cursor:pointer;background:#a08060;color:white;opacity:0.6';
+    dailyBtn.className = 'btn mode-btn';
     
     classicBtn.addEventListener('click', () => {
         exitDailyMode();
-        classicBtn.style.opacity = '1';
-        dailyBtn.style.opacity = '0.6';
+        classicBtn.classList.add('active');
+        dailyBtn.classList.remove('active');
         document.getElementById('daily-info')?.remove();
         startGame();
     });
     
     dailyBtn.addEventListener('click', () => {
         enterDailyMode();
-        dailyBtn.style.opacity = '1';
-        classicBtn.style.opacity = '0.6';
+        dailyBtn.classList.add('active');
+        classicBtn.classList.remove('active');
         // Show daily info
         let info = document.getElementById('daily-info');
         if (!info) {
             info = document.createElement('div');
             info.id = 'daily-info';
             info.style.cssText = 'text-align:center;font-size:12px;color:#776e65;margin:4px 0';
-            document.querySelector('.container').insertBefore(info, switchContainer.nextSibling);
+            switchContainer.insertAdjacentElement('afterend', info);
         }
         const best = dailyBest > 0 ? `｜Best: ${dailyBest}` : '';
         info.textContent = `📅 ${getTodayDateStr()}${best}`;

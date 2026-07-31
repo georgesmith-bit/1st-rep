@@ -66,12 +66,6 @@ function enterDailyMode() {
             dailyBest = 0;
         }
     }
-    
-    // Start daily game
-    import('./main.js').then(m => {
-        // We need to override spawnTile to use seeded RNG
-        // This will be handled by main.js checking dailyMode
-    });
 }
 
 // ── Get seeded random value ──
