@@ -2,6 +2,7 @@
 
 import { GRID_SIZE, grid, gameState, saveBest, generateTileId, saveUndoState, nextTileId } from './data.js';
 import { trackTileMerge, trackMilestone } from './analytics.js';
+import { dailyMode, dailyRandom } from './daily.js';
 
 // Randomly spawn a 2 (90%) or 4 (10%) in an empty cell
 // Returns the new tile's ID and position
@@ -13,9 +14,10 @@ export function spawnTile() {
         }
     }
     if (empty.length === 0) return null;
-    const { r, c } = empty[Math.floor(Math.random() * empty.length)];
+    const rand = dailyMode ? dailyRandom() : Math.random();
+    const { r, c } = empty[Math.floor(rand * empty.length)];
     const id = generateTileId();
-    const value = Math.random() < 0.9 ? 2 : 4;
+    const value = (dailyMode ? dailyRandom() : Math.random()) < 0.9 ? 2 : 4;
     grid[r][c] = { id, value };
     return { id, value, r, c };
 }

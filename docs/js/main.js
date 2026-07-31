@@ -5,6 +5,7 @@ import { spawnTile, move, canMove, checkWin } from './board.js';
 import { initInput } from './input.js';
 import { render, renderWithAnimation, showGameOver, hideGameOver, showWin, hideWin } from './ui.js';
 import { trackGameStart, trackTileMove, trackGameOver, trackGameWin, trackUndo, trackKeepPlaying, trackNewGameAfterWin, trackReturnVisit, trackThemeToggle, trackMilestone } from './analytics.js';
+import { dailyMode, dailyCompleted, dailyBest, enterDailyMode, exitDailyMode, saveDailyProgress, isDailyModeAvailable, getTodayDateStr } from './daily.js';
 
 
 // Anti-spam flag
@@ -53,13 +54,15 @@ function handleMove(direction) {
         if (!canMove()) {
             gameState.gameOver = true;
             trackGameOver(gameState.score, moveCount);
+            saveDailyProgress(gameState.score, false);
             setTimeout(showGameOver, 300);
         }
 
-        // Check if reached 2048, show win message
+        // Check if reached 2048
         if (!gameState.won && checkWin()) {
             gameState.won = true;
             trackGameWin(gameState.score);
+            saveDailyProgress(gameState.score, true);
             setTimeout(showWin, 300);
         }
     });
@@ -90,6 +93,52 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
     trackNewGameAfterWin();
     startGame();
 });
+
+// Daily challenge mode switch (gated behind ?daily=test)
+if (isDailyModeAvailable()) {
+    const switchContainer = document.createElement('div');
+    switchContainer.id = 'mode-switch';
+    switchContainer.style.cssText = 'display:flex;justify-content:center;gap:8px;margin:8px 0';
+    
+    const classicBtn = document.createElement('button');
+    classicBtn.textContent = 'Classic';
+    classicBtn.className = 'btn';
+    classicBtn.style.cssText = 'padding:6px 16px;border:none;border-radius:4px;font-size:13px;font-weight:bold;cursor:pointer;background:#8f7a66;color:white';
+    
+    const dailyBtn = document.createElement('button');
+    dailyBtn.textContent = 'Daily';
+    dailyBtn.className = 'btn';
+    dailyBtn.style.cssText = 'padding:6px 16px;border:none;border-radius:4px;font-size:13px;font-weight:bold;cursor:pointer;background:#a08060;color:white;opacity:0.6';
+    
+    classicBtn.addEventListener('click', () => {
+        exitDailyMode();
+        classicBtn.style.opacity = '1';
+        dailyBtn.style.opacity = '0.6';
+        document.getElementById('daily-info')?.remove();
+        startGame();
+    });
+    
+    dailyBtn.addEventListener('click', () => {
+        enterDailyMode();
+        dailyBtn.style.opacity = '1';
+        classicBtn.style.opacity = '0.6';
+        // Show daily info
+        let info = document.getElementById('daily-info');
+        if (!info) {
+            info = document.createElement('div');
+            info.id = 'daily-info';
+            info.style.cssText = 'text-align:center;font-size:12px;color:#776e65;margin:4px 0';
+            document.querySelector('.container').insertBefore(info, switchContainer.nextSibling);
+        }
+        const best = dailyBest > 0 ? `｜Best: ${dailyBest}` : '';
+        info.textContent = `📅 ${getTodayDateStr()}${best}`;
+        startGame();
+    });
+    
+    switchContainer.appendChild(classicBtn);
+    switchContainer.appendChild(dailyBtn);
+    document.getElementById('board').before(switchContainer);
+}
 
 // Undo
 const undoBtn = document.getElementById('undo-btn');
