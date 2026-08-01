@@ -4,24 +4,23 @@
 </head><body>
 <div id="r">Detecting...</div>
 <script>
-async function getIP() {
-  const svcs = [
-    'https://api.ipify.org?format=json',
-    'https://api64.ipify.org?format=json',
-    'https://icanhazip.com',
-    'https://checkip.amazonaws.com'
-  ];
-  for (const url of svcs) {
+// Try services that work inside China first
+const services = [
+  'https://api.ip.sb/geoip',           // works in China
+  'https://ipapi.co/json/',            // global fallback
+  'https://api.ipify.org?format=json', // last resort
+];
+async function tryAll() {
+  for (const url of services) {
     try {
       const r = await fetch(url);
-      const t = await r.text();
-      const ip = t.match(/\d+\.\d+\.\d+\.\d+/)?.[0] || t.trim();
-      document.getElementById('r').textContent = ip;
+      const t = await r.json();
+      document.getElementById('r').textContent = t.ip || t.query || 'no ip';
       return;
     } catch(e) {}
   }
-  document.getElementById('r').textContent = 'Failed — try wifi instead of mobile data';
+  document.getElementById('r').textContent = 'Failed. Try wifi.';
 }
-getIP();
+tryAll();
 </script>
 </body></html>
