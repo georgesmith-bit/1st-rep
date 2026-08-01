@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>IP Check</title>
-<style>body{font:24px monospace;padding:2rem;text-align:center;margin-top:20vh}</style>
+<html><head><meta charset="UTF-8"><title>Your IP</title>
+<style>body{font:28px monospace;padding:2rem;text-align:center;margin-top:15vh;background:#faf8ef;color:#776e65}</style>
 </head><body>
-<div id="ip">Detecting your IP...</div>
+<div id="r">Detecting...</div>
 <script>
-fetch('https://api.ipify.org?format=json')
-  .then(r => r.json())
-  .then(d => document.getElementById('ip').textContent = 'Your IP: ' + d.ip);
+async function getIP() {
+  const svcs = [
+    'https://api.ipify.org?format=json',
+    'https://api64.ipify.org?format=json',
+    'https://icanhazip.com',
+    'https://checkip.amazonaws.com'
+  ];
+  for (const url of svcs) {
+    try {
+      const r = await fetch(url);
+      const t = await r.text();
+      const ip = t.match(/\d+\.\d+\.\d+\.\d+/)?.[0] || t.trim();
+      document.getElementById('r').textContent = ip;
+      return;
+    } catch(e) {}
+  }
+  document.getElementById('r').textContent = 'Failed — try wifi instead of mobile data';
+}
+getIP();
 </script>
 </body></html>
