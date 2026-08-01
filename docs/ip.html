@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>IP Check</title>
+<style>body{font:24px monospace;padding:2rem;text-align:center;margin-top:20vh}</style>
+</head><body>
+<div id="ip">Detecting your IP...</div>
+<script>
+fetch('https://api.ipify.org?format=json')
+  .then(r => r.json())
+  .then(d => document.getElementById('ip').textContent = 'Your IP: ' + d.ip);
+</script>
+</body></html>
