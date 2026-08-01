@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="2048游戏完整攻略：从零开始学会2048！规则、操作、进阶策略、常见错误全解析。附带高手都在用的角落策略法。">
+    <meta property="og:title" content="2048怎么玩 — 从入门到精通的完整攻略 [2026]">
+    <meta property="og:description" content="2048游戏规则、操作技巧、进阶策略、常见误区全解析。学会角落策略法，轻松达到2048。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://live2048.com/zh/how-to-play/">
+    <meta property="og:image" content="https://live2048.com/og-image.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="2048怎么玩 — 从入门到精通的完整攻略">
+    <meta name="twitter:description" content="规则、技巧、策略、避坑指南。免费攻略。">
+    <link rel="canonical" href="https://live2048.com/zh/how-to-play/">
+    <link rel="alternate" hreflang="en" href="https://live2048.com/how-to-play/">
+    <link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/how-to-play/">
+    <link rel="alternate" hreflang="vi" href="https://live2048.com/vi/how-to-play/">
+    <link rel="alternate" hreflang="x-default" href="https://live2048.com/how-to-play/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>2048怎么玩 — 规则、技巧与通关攻略 [2026指南]</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .guide { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; color: #776e65; line-height: 1.9; font-size: 16px; }
+        .guide h1 { font-size: 2rem; color: #776e65; margin-bottom: 0.5rem; }
+        .guide h2 { font-size: 1.4rem; color: #776e65; margin: 2rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #eee4da; }
+        .guide h3 { font-size: 1.1rem; color: #8e7a66; margin: 1.2rem 0 0.3rem; }
+        .guide p { margin: 0.5rem 0; }
+        .guide ul, .guide ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+        .guide li { margin: 0.3rem 0; }
+        .guide a { color: #776e65; font-weight: bold; }
+        .guide .play-btn { display: inline-block; margin: 2rem 0; padding: 14px 36px; background: #8f7a66; color: #f9f6f2; font-size: 1.2rem; font-weight: bold; border-radius: 6px; text-decoration: none; }
+        .guide .play-btn:hover { background: #9f8a76; }
+        .guide .tip-box { background: #faf8ef; border-left: 4px solid #f0b27a; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
+        .guide .mistake-box { background: #fff5f5; border-left: 4px solid #e57373; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
+        .guide code { background: #eee4da; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        @media (prefers-color-scheme: dark) {
+            .guide { color: #d4c5b9; }
+            .guide h1, .guide h2 { color: #d4c5b9; }
+            .guide h3 { color: #b8a99a; }
+            .guide .tip-box { background: #2a2520; border-color: #f0b27a; }
+            .guide .mistake-box { background: #2a2020; border-color: #e57373; }
+            .guide a { color: #d4c5b9; }
+            .guide code { background: #3a3530; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "2048怎么玩 — 从入门到精通的完整攻略",
+      "description": "2048游戏完整攻略：规则、操作技巧、角落策略法、常见错误避坑指南。",
+      "url": "https://live2048.com/zh/how-to-play/",
+      "image": "https://live2048.com/og-image.svg",
+      "author": { "@type": "Person", "name": "Live2048 Team" },
+      "datePublished": "2026-08-01",
+      "dateModified": "2026-08-01",
+      "inLanguage": "zh-CN",
+      "about": { "@type": "VideoGame", "name": "2048" }
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S0NZ96NCB1');
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>2048</h1>
+            <div class="scores"><div class="score-box">攻略</div></div>
+        </header>
+        <div class="guide">
+            <h1>2048怎么玩 — 从入门到精通的完整攻略</h1>
+            <p style="color:#8e7a66;">最后更新：2026年8月 · 阅读约6分钟</p>
+            <p>2048是一款看似简单却深藏不露的数字益智游戏：在4×4的棋盘上滑动数字方块，合并相同的数字，最终目标是合成<strong>2048</strong>方块。5分钟上手，但精通需要数周。这篇攻略涵盖从基础规则到高级策略的全部内容。</p>
+            <a class="play-btn" href="/zh/">🎮 立即开始玩2048</a>
+
+            <h2>1. 快速入门：游戏怎么玩</h2>
+            <p>开局时棋盘上随机出现两个方块（两个<code>2</code>，或一个<code>2</code>和一个<code>4</code>）。每次操作：</p>
+            <ol>
+                <li>向一个方向<strong>滑动</strong>（或按方向键）——上、下、左、右。</li>
+                <li><strong>所有方块</strong>向该方向滑动到底。</li>
+                <li>相同数字的方块<strong>碰撞后合并</strong>为一个方块，数值相加。</li>
+                <li>在随机空格出现一个新方块（<code>2</code> 或 <code>4</code>）。</li>
+            </ol>
+            <p>目标：不断合并直到出现<strong>2048</strong>方块。但达到2048后可以继续——真正的挑战是冲击4096、8192甚至更高。</p>
+
+            <div class="tip-box">
+                <strong>💡 小提示：</strong>每次合并都会加分。顶部显示的分数是所有<em>合并数值的总和</em>，不单单是最高方块的值。
+            </div>
+
+            <h2>2. 操作方式</h2>
+            <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+                <tr style="border-bottom:1px solid #eee4da;"><th style="text-align:left; padding:6px;">平台</th><th style="text-align:left; padding:6px;">怎么玩</th></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">电脑</td><td style="padding:6px;">方向键（↑ ↓ ← →）或 W/A/S/D</td></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">手机 / 平板</td><td style="padding:6px;">手指滑动</td></tr>
+                <tr><td style="padding:6px;">触屏笔记本</td><td style="padding:6px;">触控板滑动或方向键</td></tr>
+            </table>
+
+            <h2>3. 核心策略：角落法</h2>
+            <p>所有2048高手都在用的第一策略：</p>
+            <ol>
+                <li><strong>选定一个角落</strong>——大多数玩家选<strong>右下角</strong>。</li>
+                <li><strong>把最大方块锁在角落</strong>里，永远不要把它移出来。</li>
+                <li><strong>沿底行递减排列</strong>：最大方块在角落，旁边依次是1024、512、256。</li>
+                <li><strong>只用两个方向</strong>——通常是<strong>下</strong>和<strong>右</strong>。除非万不得已，不要按上。</li>
+            </ol>
+
+            <div class="mistake-box">
+                <strong>⚠️ 常见错误：</strong>四个方向随机乱滑。这会让你的大方块散落各处，很快空间就不够用了。严格要求自己，90%的时间只用两个方向。
+            </div>
+
+            <h2>4. 分阶段攻略</h2>
+            <h3>开局（2–128）</h3>
+            <p>游戏前期重点是：在选定角落建一个最高的方块。不必在意分数——只管向角落方向合并。基本只用<strong>下和右</strong>两个方向。</p>
+            <h3>中局（128–1024）</h3>
+            <p>维持底行的递减链条。上方两行尽量保持清空或只有小数字。如果最大方块不小心离开了角落，<strong>优先把它挪回去</strong>，再做其他操作。</p>
+            <h3>残局（1024–2048）</h3>
+            <p>底行应该呈现：<code>[2048][1024][512][256]</code>。只合并那些符合这个排序的方块。避免在上方行随机合并——那些杂乱的方块会阻碍关键方块的移动。</p>
+
+            <h2>5. 五大技巧</h2>
+            <ol>
+                <li><strong>尽量不按"上"。</strong>"上"是最危险的方向——可能把底行的大方块抬起来打乱阵型。</li>
+                <li><strong>先填满底行。</strong>底行的方块在按下时不会移动，所以是放置大方块最安全的位置。</li>
+                <li><strong>只为链条而合并。</strong>左上角的<code>4+4→8</code>虽然爽，但如果不能喂养底行链条，只是添乱。</li>
+                <li><strong>警惕"死局"。</strong>如果大方块的三面都被堵住，再来一个坏方向就输了。要提前预判2-3步。</li>
+                <li><strong>撤销是学习工具。</strong>多用撤销键（Ctrl+Z）尝试不同操作。时间久了，你自然会知道哪些路是死胡同。</li>
+            </ol>
+
+            <h2>6. 常见问题</h2>
+            <h3>每次都能达到2048吗？</h3>
+            <p>不能——随机性有影响。即使最好的策略，胜率也只有70-80%。关键在于一致性：减少坏操作，你大多数时候都能到2048。</p>
+            <h3>最高能合成多大的方块？</h3>
+            <p>理论上限是131,072（2<sup>17</sup>），需要完美操作和完美运气。实际社区纪录是65,536。对大多数人来说，达到4096就已经很厉害了。</p>
+            <h3>有2048的AI求解器吗？</h3>
+            <p>有。AI算法能达到2048的概率超过90%，4096约10%。但那样还有什么意思？2048的乐趣就在于挣扎的过程。</p>
+            <h3>撤销会影响分数吗？</h3>
+            <p>不会。撤销只是回退上一步操作，分数也会回到操作前的状态。放心用，这是学习的工具。</p>
+
+            <hr style="border:none; border-top:2px solid #eee4da; margin:3rem 0 2rem;">
+            <p style="text-align:center; font-size:1.2rem;">准备好实践这些技巧了吗？</p>
+            <div style="text-align:center;">
+                <a class="play-btn" href="/zh/">🎮 开始玩2048——免费在线</a>
+            </div>
+            <p style="text-align:center; color:#8e7a66; margin-top:2rem; font-size:0.85rem;">
+                <a href="/zh/">2048游戏</a> · <a href="/tips/">技巧策略</a> · <a href="/about/">关于</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

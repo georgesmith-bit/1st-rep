@@ -31,6 +31,22 @@
   </url>
   <url>
     <loc>https://live2048.com/how-to-play/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://live2048.com/vi/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://live2048.com/how-to-play/"/>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/zh/how-to-play/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/vi/how-to-play/</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
