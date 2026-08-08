@@ -416,10 +416,10 @@ function moveGrid(direction) {
         const idx = traversalOrder[i];
         let row, colIdxList;
         if (direction==='left'||direction==='right') {
-            row = grid[idx].map((cell,j)=>({...cell,_origCol:j}));
-            colIdxList = row.map(c=>c._origCol);
+            row = grid[idx].map((cell,j)=>cell?{id:cell.id,value:cell.value,_origCol:j}:null);
+            colIdxList = row.map((c,i)=>c?c._origCol:-1);
         } else {
-            row = grid.map((r,j)=>({...(r[idx]||null),_origRow:j}));
+            row = grid.map((r,j)=>r[idx]?{id:r[idx].id,value:r[idx].value,_origRow:j}:null);
             colIdxList = row.map(c=>c._origRow);
         }
         const {moves,merges,result} = slideRow(row, idx, colIdxList);
