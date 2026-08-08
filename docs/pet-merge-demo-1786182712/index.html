@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Pet Merge Arena — Demo</title>
+<style>
+:root {
+    --bg: #faf8ef;
+    --text: #776e65;
+    --board-bg: #bbada0;
+    --cell-bg: rgba(238,228,218,0.35);
+    --btn-bg: #8f7a66;
+    --btn-text: #f9f6f2;
+    --tile-glow-common: rgba(158,158,158,0.4);
+    --tile-glow-rare: rgba(79,195,247,0.6);
+    --tile-glow-epic: rgba(206,147,216,0.6);
+    --tile-glow-legendary: rgba(255,213,79,0.7);
+    --tile-glow-mythic: linear-gradient(135deg, #ff80ab, #ce93d8, #4fc3f7, #ffd54f);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+#app {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    position: relative;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+h1 {
+    font-size: 2.5em;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f093fb, #f5576c, #ffd54f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.header-right { display: flex; gap: 8px; align-items: center; }
+.score-box {
+    background: var(--board-bg);
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 12px;
+    text-align: center;
+    min-width: 70px;
+}
+.score-label { font-size: 0.65em; text-transform: uppercase; opacity: 0.8; }
+.score-value { font-size: 1.2em; font-weight: bold; }
+.game-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+.buttons { display: flex; gap: 6px; }
+.buttons button, #collection-btn {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.buttons button:active, #collection-btn:active { transform: scale(0.95); }
+.game-hint {
+    text-align: center;
+    font-size: 0.75em;
+    opacity: 0.5;
+    margin-bottom: 8px;
+}
+#board-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--board-bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+#board {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.grid-cell {
+    position: absolute;
+    background: var(--cell-bg);
+    border-radius: 4px;
+}
+.tile {
+    position: absolute;
+    border-radius: 4px;
+    transition: transform 0.12s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.tile-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.tile-emoji { font-size: 2em; line-height: 1; }
+.tile-name { font-size: 0.65em; font-weight: 700; margin-top: 2px; }
+/* Rarity border glows */
+.tile[data-rarity="common"] { box-shadow: 0 0 0 2px rgba(158,158,158,0.3); background: rgba(255,255,255,0.85); }
+.tile[data-rarity="rare"] { box-shadow: 0 0 8px var(--tile-glow-rare), 0 0 0 2px rgba(79,195,247,0.4); background: rgba(227,242,253,0.9); }
+.tile[data-rarity="epic"] { box-shadow: 0 0 12px var(--tile-glow-epic), 0 0 0 2px rgba(206,147,216,0.5); background: rgba(243,229,245,0.9); }
+.tile[data-rarity="legendary"] { box-shadow: 0 0 16px var(--tile-glow-legendary), 0 0 0 3px rgba(255,213,79,0.5); background: rgba(255,253,231,0.9); animation: legendaryPulse 2s ease-in-out infinite; }
+.tile[data-rarity="mythic"] { box-shadow: 0 0 20px rgba(255,128,171,0.7), 0 0 30px rgba(206,147,216,0.5), 0 0 0 3px rgba(255,213,79,0.6); background: linear-gradient(135deg, rgba(255,245,245,0.9), rgba(245,245,255,0.9), rgba(255,255,245,0.9)); animation: mythicShimmer 3s ease-in-out infinite; }
+@keyframes legendaryPulse {
+    0%, 100% { box-shadow: 0 0 16px var(--tile-glow-legendary), 0 0 0 3px rgba(255,213,79,0.5); }
+    50% { box-shadow: 0 0 24px var(--tile-glow-legendary), 0 0 0 4px rgba(255,213,79,0.7); }
+}
+@keyframes mythicShimmer {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(15deg); }
+}
+.tile-new { animation: tileAppear 0.2s ease; }
+@keyframes tileAppear {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.tile-merged { animation: tileBounce 0.3s ease; }
+@keyframes tileBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+.score-increase {
+    position: absolute;
+    font-weight: bold;
+    color: #f5576c;
+    pointer-events: none;
+    z-index: 100;
+    animation: scoreFly 0.8s ease-out forwards;
+}
+@keyframes scoreFly {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
+/* Sparkle particles */
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 99;
+    animation: sparkleBurst 0.6s ease-out forwards;
+}
+@keyframes sparkleBurst {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+}
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.overlay-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+}
+.overlay-box h2 { margin-bottom: 12px; }
+.overlay-box button {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+}
+/* Collection grid */
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+}
+.collection-card {
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 0.75em;
+    transition: transform 0.2s;
+}
+.collection-card.owned { cursor: pointer; }
+.collection-card.owned:hover { transform: scale(1.05); }
+.collection-card.unknown {
+    background: #eee;
+    color: #ccc;
+    filter: grayscale(1);
+}
+.collection-card .card-emoji { font-size: 1.8em; }
+.collection-card .card-name { font-weight: 700; margin-top: 2px; }
+.collection-card .card-rarity { font-size: 0.7em; opacity: 0.7; }
+.collection-card[data-rarity="common"] { border: 2px solid rgba(158,158,158,0.3); }
+.collection-card[data-rarity="rare"] { border: 2px solid rgba(79,195,247,0.5); background: rgba(227,242,253,0.5); }
+.collection-card[data-rarity="epic"] { border: 2px solid rgba(206,147,216,0.5); background: rgba(243,229,245,0.5); }
+.collection-card[data-rarity="legendary"] { border: 2px solid rgba(255,213,79,0.6); background: rgba(255,253,231,0.5); }
+.collection-card[data-rarity="mythic"] { border: 3px solid; border-image: linear-gradient(135deg, #ff80ab, #ce93d8, #4fc3f7, #ffd54f) 1; background: rgba(255,245,245,0.5); }
+.collection-stats { font-size: 0.85em; opacity: 0.7; margin-bottom: 8px; }
+.hidden { display: none !important; }
+@media (max-width: 400px) {
+    h1 { font-size: 2em; }
+    .collection-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+<div id="app">
+    <header>
+        <h1>Pet Merge</h1>
+        <div class="header-right">
+            <div class="score-box"><div class="score-label">SCORE</div><div class="score-value" id="score">0</div></div>
+            <div class="score-box"><div class="score-label">BEST</div><div class="score-value" id="best">0</div></div>
+        </div>
+    </header>
+    <div class="game-intro">
+        <span>Merge pets, collect them all! 🐾</span>
+        <div class="buttons">
+            <button id="collection-btn" title="Collection Book">📖 <span id="collection-count">0/15</span></button>
+            <button id="undo-btn">↩ Undo</button>
+            <button id="restart-btn">🔄 New</button>
+        </div>
+    </div>
+    <div class="game-hint">Swipe or arrow keys to merge pets</div>
+    <div id="board-container">
+        <div id="board"></div>
+        <div id="game-over" class="overlay hidden">
+            <div class="overlay-box">
+                <h2>Game Over!</h2>
+                <p>Score: <strong id="final-score">0</strong></p>
+                <p>Pets Discovered: <strong id="final-pets">0</strong></p>
+                <button onclick="startGame(); hideOverlay('game-over');">Try Again</button>
+            </div>
+        </div>
+    </div>
+    <!-- Collection Overlay -->
+    <div id="collection-overlay" class="overlay hidden">
+        <div class="overlay-box">
+            <h2>📖 Pet Collection</h2>
+            <div class="collection-stats" id="collection-stats"></div>
+            <div class="collection-grid" id="collection-grid"></div>
+            <button onclick="hideOverlay('collection-overlay')">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ==================== PET DATA ====================
+const PETS = {
+    2:    { emoji: '🟢', name: 'Slime',   rarity: 'common',    color: '#9e9e9e' },
+    4:    { emoji: '🐱', name: 'Cat',     rarity: 'common',    color: '#9e9e9e' },
+    8:    { emoji: '🦊', name: 'Fox',     rarity: 'common',    color: '#9e9e9e' },
+    16:   { emoji: '🐺', name: 'Wolf',    rarity: 'rare',      color: '#4fc3f7' },
+    32:   { emoji: '🐻', name: 'Bear',    rarity: 'rare',      color: '#4fc3f7' },
+    64:   { emoji: '🦅', name: 'Eagle',   rarity: 'rare',      color: '#4fc3f7' },
+    128:  { emoji: '🦈', name: 'Shark',   rarity: 'epic',      color: '#ce93d8' },
+    256:  { emoji: '🐯', name: 'Tiger',   rarity: 'epic',      color: '#ce93d8' },
+    512:  { emoji: '🐊', name: 'Croco',   rarity: 'epic',      color: '#ce93d8' },
+    1024: { emoji: '🦅', name: 'Phoenix', rarity: 'legendary',  color: '#ffd54f' },
+    2048: { emoji: '🐉', name: 'Dragon',  rarity: 'legendary',  color: '#ffd54f' },
+    4096: { emoji: '👑', name: 'Celestial', rarity: 'mythic',   color: '#ff80ab' },
+};
+
+// ==================== GAME STATE ====================
+const GRID_SIZE = 4;
+let grid = [];
+let nextTileId = 1;
+let undoState = null;
+let score = 0;
+let best = 0;
+let gameOver = false;
+let won = false;
+let keepPlaying = false;
+let discovered = {}; // {value: true} for pet values discovered
+
+// ==================== DOM REFS ====================
+const boardEl = document.getElementById('board');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const collectionCountEl = document.getElementById('collection-count');
+let tileElements = new Map();
+let gridBackgroundBuilt = false;
+let layoutCache = { gap: 0, cellSize: 0, boardWidth: 0 };
+
+// ==================== HELPERS ====================
+function updateLayoutCache() {
+    const boardRect = boardEl.getBoundingClientRect();
+    if (boardRect.width === layoutCache.boardWidth) return;
+    layoutCache.boardWidth = boardRect.width;
+    layoutCache.gap = boardRect.width * 0.02;
+    layoutCache.cellSize = (boardRect.width - layoutCache.gap * (GRID_SIZE + 1)) / GRID_SIZE;
+}
+function getTilePosition(r, c) {
+    const { gap, cellSize } = layoutCache;
+    return { left: gap + c * (cellSize + gap), top: gap + r * (cellSize + gap) };
+}
+function formatScore(s) {
+    if (s < 1000) return String(s);
+    if (s < 1000000) return (s/1000).toFixed(1).replace(/\.0$/,'')+'k';
+    return (s/1000000).toFixed(1).replace(/\.0$/,'')+'m';
+}
+
+// ==================== COLLECTION ====================
+function discoverPet(value) {
+    if (!PETS[value] || discovered[value]) return false;
+    discovered[value] = true;
+    updateCollectionCount();
+    return true;
+}
+function updateCollectionCount() {
+    const count = Object.keys(discovered).length;
+    collectionCountEl.textContent = count + '/15';
+}
+function renderCollection() {
+    const grid = document.getElementById('collection-grid');
+    const stats = document.getElementById('collection-stats');
+    const count = Object.keys(discovered).length;
+    const total = Object.keys(PETS).length;
+    stats.textContent = `Discovered: ${count}/${total}`;
+    
+    grid.innerHTML = '';
+    const values = Object.keys(PETS).map(Number).sort((a,b)=>a-b);
+    for (const v of values) {
+        const p = PETS[v];
+        const card = document.createElement('div');
+        card.className = 'collection-card ' + (discovered[v] ? 'owned' : 'unknown');
+        card.setAttribute('data-rarity', p.rarity);
+        card.innerHTML = `
+            <div class="card-emoji">${discovered[v] ? p.emoji : '❓'}</div>
+            <div class="card-name">${discovered[v] ? p.name : '???'}</div>
+            <div class="card-rarity">${discovered[v] ? p.rarity : 'unknown'}</div>
+        `;
+        grid.appendChild(card);
+    }
+}
+
+// ==================== BOARD LOGIC ====================
+function initGrid() {
+    grid = Array.from({length:GRID_SIZE}, ()=>Array(GRID_SIZE).fill(null));
+    nextTileId = 1;
+    undoState = null;
+}
+function spawnTile() {
+    const empty = [];
+    for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) if (!grid[r][c]) empty.push({r,c});
+    if (!empty.length) return null;
+    const {r,c} = empty[Math.floor(Math.random()*empty.length)];
+    const value = Math.random()<0.9 ? 2 : 4;
+    const id = nextTileId++;
+    grid[r][c] = {id, value};
+    return {id, value, r, c};
+}
+function slideRow(row, rowIdx, colIdx) {
+    const moves=[], merges=[];
+    const filtered = row.filter(v=>v!==null);
+    const result=[];
+    for (let i=0;i<filtered.length;i++) {
+        if (i<filtered.length-1 && filtered[i].value===filtered[i+1].value) {
+            const newVal = filtered[i].value*2;
+            score += newVal;
+            moves.push({id:filtered[i].id,fromRow:rowIdx,fromCol:colIdx[i],toRow:rowIdx,toCol:result.length,merge:true});
+            moves.push({id:filtered[i+1].id,fromRow:rowIdx,fromCol:colIdx[i+1],toRow:rowIdx,toCol:result.length,merge:true,disappear:true});
+            result.push({id:filtered[i].id,value:newVal});
+            merges.push({id:filtered[i].id,row:rowIdx,col:result.length-1,value:newVal});
+            i++;
+        } else {
+            moves.push({id:filtered[i].id,fromRow:rowIdx,fromCol:colIdx[i],toRow:rowIdx,toCol:result.length,merge:false});
+            result.push(filtered[i]);
+        }
+    }
+    return {moves, merges, result};
+}
+function moveGrid(direction) {
+    let anyMoved=false;
+    const allMoves=[], allMerges=[];
+    const newGrid = Array.from({length:GRID_SIZE},()=>Array(GRID_SIZE).fill(null));
+    const traversalOrder = (direction==='down'||direction==='right') ? [3,2,1,0] : [0,1,2,3];
+    for (let i=0;i<GRID_SIZE;i++) {
+        const idx = traversalOrder[i];
+        let row, colIdxList;
+        if (direction==='left'||direction==='right') {
+            row = grid[idx].map((cell,j)=>({...cell,_origCol:j}));
+            colIdxList = row.map(c=>c._origCol);
+        } else {
+            row = grid.map((r,j)=>({...(r[idx]||null),_origRow:j}));
+            colIdxList = row.map(c=>c._origRow);
+        }
+        const {moves,merges,result} = slideRow(row, idx, colIdxList);
+        if (direction==='right'||direction==='down') result.reverse();
+        for (let j=0;j<GRID_SIZE;j++) {
+            if (direction==='left'||direction==='right') newGrid[idx][j]=result[j]||null;
+            else newGrid[j][idx]=result[j]||null;
+        }
+        if (moves.some(m=>m.fromCol!==m.toCol||m.fromRow!==m.toRow||m.merge)) anyMoved=true;
+        allMoves.push(...moves);
+        allMerges.push(...merges);
+    }
+    if (!anyMoved) return null;
+    grid = newGrid;
+    return {moves:allMoves, merges:allMerges};
+}
+function canMove() {
+    for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) {
+        if (!grid[r][c]) return true;
+        if (c<GRID_SIZE-1 && grid[r][c+1] && grid[r][c].value===grid[r][c+1].value) return true;
+        if (r<GRID_SIZE-1 && grid[r+1][c] && grid[r][c].value===grid[r+1][c].value) return true;
+    }
+    return false;
+}
+function checkWin() {
+    for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) if (grid[r][c] && grid[r][c].value>=2048) return true;
+    return false;
+}
+
+// ==================== SPARKLE PARTICLES ====================
+function spawnSparkles(x, y, count) {
+    const colors = ['#ffd54f','#ff80ab','#4fc3f7','#ce93d8','#69f0ae','#fff'];
+    for (let i=0;i<count;i++) {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        const size = 4+Math.random()*8;
+        const angle = Math.random()*Math.PI*2;
+        const dist = 20+Math.random()*30;
+        el.style.cssText = `
+            left:${x}px;top:${y}px;
+            width:${size}px;height:${size}px;
+            background:${colors[Math.floor(Math.random()*colors.length)]};
+            border-radius:50%;
+            --sx:${Math.cos(angle)*dist}px;
+            --sy:${Math.sin(angle)*dist}px;
+        `;
+        boardEl.appendChild(el);
+        setTimeout(()=>el.remove(), 600);
+    }
+}
+
+// ==================== UI RENDERING ====================
+function buildGridBackground() {
+    if (gridBackgroundBuilt) return;
+    updateLayoutCache();
+    const {gap, cellSize} = layoutCache;
+    boardEl.querySelectorAll('.grid-cell').forEach(c=>c.remove());
+    for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) {
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.style.cssText = `left:${gap+c*(cellSize+gap)}px;top:${gap+r*(cellSize+gap)}px;width:${cellSize}px;height:${cellSize}px`;
+        boardEl.appendChild(cell);
+    }
+    gridBackgroundBuilt = true;
+}
+function createTileElement(id, value, r, c) {
+    updateLayoutCache();
+    const {cellSize} = layoutCache;
+    const pos = getTilePosition(r,c);
+    const pet = PETS[value] || {emoji:'❓',name:'?',rarity:'common',color:'#9e9e9e'};
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.dataset.id = id;
+    tile.setAttribute('data-rarity', pet.rarity);
+    tile.style.cssText = `width:${cellSize}px;height:${cellSize}px;transform:translate(${pos.left}px,${pos.top}px)`;
+    const inner = document.createElement('div');
+    inner.className = 'tile-inner';
+    const emojiSize = cellSize * 0.35;
+    const nameSize = cellSize * 0.13;
+    inner.innerHTML = `
+        <span class="tile-emoji" style="font-size:${emojiSize}px">${pet.emoji}</span>
+        <span class="tile-name" style="font-size:${nameSize}px">${pet.name}</span>
+    `;
+    tile.appendChild(inner);
+    return tile;
+}
+function render() {
+    scoreEl.textContent = formatScore(score);
+    bestEl.textContent = formatScore(best);
+    buildGridBackground();
+    const currentIds = new Set();
+    const creates = [];
+    for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) {
+        const cell = grid[r][c];
+        if (!cell) continue;
+        currentIds.add(cell.id);
+        if (!tileElements.has(cell.id)) creates.push({id:cell.id, value:cell.value, r, c});
+    }
+    const toRemove = [];
+    for (const [id] of tileElements) if (!currentIds.has(id)) toRemove.push(id);
+    requestAnimationFrame(()=>{
+        for (const id of toRemove) { tileElements.get(id).remove(); tileElements.delete(id); }
+        for (const {id,value,r,c} of creates) {
+            const tile = createTileElement(id,value,r,c);
+            boardEl.appendChild(tile);
+            tileElements.set(id, tile);
+            requestAnimationFrame(()=>tile.classList.add('tile-new'));
+        }
+    });
+}
+function renderWithAnimation(moveInfo, newTile, onDone) {
+    scoreEl.textContent = formatScore(score);
+    bestEl.textContent = formatScore(best);
+    buildGridBackground();
+    const {moves, merges} = moveInfo;
+    for (const move of moves) {
+        const tile = tileElements.get(move.id);
+        if (!tile) continue;
+        const pos = getTilePosition(move.toRow, move.toCol);
+        tile.style.transform = `translate(${pos.left}px,${pos.top}px)`;
+    }
+    setTimeout(()=>{
+        for (const merge of merges) {
+            const mergeMoves = moves.filter(m=>m.toRow===merge.row&&m.toCol===merge.col&&m.merge);
+            if (mergeMoves.length>=2) {
+                const firstTile = tileElements.get(mergeMoves[0].id);
+                if (firstTile) {
+                    const pet = PETS[merge.value] || {emoji:'❓',name:'?',rarity:'common'};
+                    firstTile.setAttribute('data-rarity', pet.rarity);
+                    const inner = firstTile.querySelector('.tile-inner');
+                    if (inner) {
+                        updateLayoutCache();
+                        const cellSize = layoutCache.cellSize;
+                        inner.innerHTML = `
+                            <span class="tile-emoji" style="font-size:${cellSize*0.35}px">${pet.emoji}</span>
+                            <span class="tile-name" style="font-size:${cellSize*0.13}px">${pet.name}</span>
+                        `;
+                    }
+                    firstTile.classList.add('tile-merged');
+                    // Sparkles at merge position
+                    const pos = getTilePosition(merge.row, merge.col);
+                    const boardRect = boardEl.getBoundingClientRect();
+                    spawnSparkles(pos.left + layoutCache.cellSize/2, pos.top + layoutCache.cellSize/2, 12);
+                    // Discovery check
+                    if (discoverPet(merge.value)) {
+                        setTimeout(()=>{
+                            const pet2 = PETS[merge.value];
+                            const toast = document.createElement('div');
+                            toast.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;z-index:300;font-size:0.9em;animation:scoreFly 2s ease-out forwards`;
+                            toast.textContent = `✨ New pet discovered: ${pet2.emoji} ${pet2.name}!`;
+                            document.body.appendChild(toast);
+                            setTimeout(()=>toast.remove(), 2100);
+                            updateCollectionCount();
+                        }, 400);
+                    }
+                }
+                const secondTile = tileElements.get(mergeMoves[1].id);
+                if (secondTile) secondTile.remove();
+                tileElements.delete(mergeMoves[1].id);
+            }
+        }
+        if (newTile && !tileElements.has(newTile.id)) {
+            const tile = createTileElement(newTile.id, newTile.value, newTile.r, newTile.c);
+            boardEl.appendChild(tile);
+            tileElements.set(newTile.id, tile);
+            requestAnimationFrame(()=>tile.classList.add('tile-new'));
+        }
+        setTimeout(()=>{
+            for (const t of tileElements.values()) t.classList.remove('tile-new','tile-merged');
+            if (onDone) onDone();
+        }, 350);
+    }, 120);
+}
+
+// ==================== GAME FLOW ====================
+function saveUndo() {
+    undoState = {
+        grid: grid.map(r=>r.map(c=>c?{...c}:null)),
+        score, nextTileId, gameOver, won
+    };
+}
+function restoreUndo() {
+    if (!undoState) return false;
+    grid = undoState.grid;
+    score = undoState.score;
+    gameOver = undoState.gameOver;
+    won = undoState.won;
+    nextTileId = undoState.nextTileId;
+    undoState = null;
+    tileElements.forEach(t=>t.remove());
+    tileElements.clear();
+    render();
+    return true;
+}
+function saveBest() {
+    if (score>best) { best=score; localStorage.setItem('petmerge_best',best); }
+}
+function startGame() {
+    initGrid();
+    score=0; gameOver=false; won=false; keepPlaying=false;
+    if (!best) { const s=localStorage.getItem('petmerge_best'); best=s?parseInt(s):0; }
+    tileElements.forEach(t=>t.remove());
+    tileElements.clear();
+    spawnTile(); spawnTile();
+    saveUndo();
+    render();
+    saveBest();
+}
+function handleMove(direction) {
+    if (gameOver) return;
+    saveUndo();
+    const moveInfo = moveGrid(direction);
+    if (!moveInfo) { undoState=null; return; }
+    const newTile = spawnTile();
+    renderWithAnimation(moveInfo, newTile, ()=>{
+        saveBest();
+        updateCollectionCount();
+        if (!canMove() && !gameOver) {
+            gameOver=true;
+            setTimeout(()=>{
+                document.getElementById('final-score').textContent = formatScore(score);
+                document.getElementById('final-pets').textContent = Object.keys(discovered).length;
+                document.getElementById('game-over').classList.remove('hidden');
+            }, 400);
+        }
+        if (!won && checkWin()) { won=true; }
+    });
+}
+
+// ==================== OVERLAY ====================
+function hideOverlay(id) { document.getElementById(id).classList.add('hidden'); }
+
+// ==================== INPUT ====================
+document.addEventListener('keydown', e=>{
+    const map = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
+    if (map[e.key]) { e.preventDefault(); handleMove(map[e.key]); }
+});
+let touchStartX=0, touchStartY=0;
+document.addEventListener('touchstart', e=>{ touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; }, {passive:true});
+document.addEventListener('touchend', e=>{
+    const dx=e.changedTouches[0].clientX-touchStartX;
+    const dy=e.changedTouches[0].clientY-touchStartY;
+    if (Math.abs(dx)<20 && Math.abs(dy)<20) return;
+    handleMove(Math.abs(dx)>Math.abs(dy) ? (dx>0?'right':'left') : (dy>0?'down':'up'));
+});
+
+// ==================== BUTTONS ====================
+document.getElementById('restart-btn').addEventListener('click', ()=>startGame());
+document.getElementById('undo-btn').addEventListener('click', ()=>{
+    if (restoreUndo()) saveBest();
+});
+document.getElementById('collection-btn').addEventListener('click', ()=>{
+    renderCollection();
+    document.getElementById('collection-overlay').classList.remove('hidden');
+});
+
+// ==================== START ====================
+startGame();
+</script>
+</body>
+</html>
