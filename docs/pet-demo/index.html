@@ -420,7 +420,7 @@ function moveGrid(direction) {
             colIdxList = row.map((c,i)=>c?c._origCol:-1);
         } else {
             row = grid.map((r,j)=>r[idx]?{id:r[idx].id,value:r[idx].value,_origRow:j}:null);
-            colIdxList = row.map(c=>c._origRow);
+            colIdxList = row.map(c=>c?c._origRow:-1);
         }
         const {moves,merges,result} = slideRow(row, idx, colIdxList);
         if (direction==='right'||direction==='down') result.reverse();
