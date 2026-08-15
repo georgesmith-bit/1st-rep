@@ -87,7 +87,6 @@
             <div class="buttons">
                 <button id="undo-btn" aria-label="撤销上一步">撤销</button>
                 <button id="restart-btn" aria-label="开始新游戏">新游戏</button>
-                <button id="share-btn" aria-label="分享游戏">分享</button>
             </div>
         </div>
         <div class="game-hint">方向键 / WASD 或滑动屏幕</div>
@@ -111,18 +110,5 @@
         </div>
     </div>
     <script type="module" src="../js/main.js?v=15"></script>
-    <script>
-    (function(){
-        var b = document.getElementById('share-btn');
-        if (!b) return;
-        b.addEventListener('click', function(){
-            var u = location.origin + location.pathname + '?utm_source=player_share&utm_medium=social&utm_campaign=2048_game';
-            function ok(){ var o=b.textContent; b.textContent='已复制'; setTimeout(function(){b.textContent=o;},2000); }
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(u).then(ok).catch(function(){prompt('复制链接:',u);});
-            } else { prompt('复制链接:',u); }
-        });
-    })();
-    </script>
 </body>
 </html>
