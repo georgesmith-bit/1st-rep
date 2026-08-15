@@ -334,7 +334,7 @@ let score = 0;
 let best = 0;
 let gameOver = false;
 let won = false;
-let keepPlaying = false;
+let continuedAfterWin = false;
 let discovered = {}; // {value: true} for pet values discovered
 let lastScore = 0; // previous score, for +N float animation
 let isProcessing = false; // anti-spam flag during animation
@@ -683,7 +683,7 @@ function saveBest() {
 function saveGameState() {
     const state = {
         grid: grid.map(r=>r.map(c=>c?{...c}:null)),
-        score, best, gameOver, won, keepPlaying, nextTileId, discovered
+        score, best, gameOver, won, continuedAfterWin, nextTileId, discovered
     };
     localStorage.setItem('petmerge_state', JSON.stringify(state));
 }
@@ -694,7 +694,7 @@ function loadGameState() {
         const s = JSON.parse(saved);
         grid = s.grid.map(r=>r.map(c=>c?{...c}:null));
         score = s.score; best = s.best; gameOver = s.gameOver;
-        won = s.won; keepPlaying = s.keepPlaying;
+        won = s.won; continuedAfterWin = s.continuedAfterWin;
         nextTileId = s.nextTileId; discovered = s.discovered || {};
         return true;
     } catch(e) { return false; }
@@ -705,7 +705,7 @@ function updateUndoButton() {
 }
 function startGame() {
     initGrid();
-    score=0; gameOver=false; won=false; keepPlaying=false;
+    score=0; gameOver=false; won=false; continuedAfterWin=false;
     lastScore = 0;
     if (!best) { const s=localStorage.getItem('petmerge_best'); best=s?parseInt(s):0; }
     tileElements.forEach(t=>t.remove());
@@ -750,7 +750,7 @@ function handleMove(direction) {
 }
 function keepPlaying() {
     hideOverlay('win-message');
-    keepPlaying = true;
+    continuedAfterWin = true;
     saveGameState();
 }
 function confirmNewGame(callback) {
@@ -805,7 +805,7 @@ function initGame() {
         updateCollectionCount();
         updateUndoButton();
         if (gameOver) document.getElementById('game-over').classList.remove('hidden');
-        if (won && !keepPlaying) document.getElementById('win-message').classList.remove('hidden');
+        if (won && !continuedAfterWin) document.getElementById('win-message').classList.remove('hidden');
     } else {
         startGame();
     }
