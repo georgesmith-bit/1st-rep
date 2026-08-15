@@ -174,6 +174,9 @@ h1 {
     0% { transform: translateY(0); opacity: 1; }
     100% { transform: translateY(-40px); opacity: 0; }
 }
+.win-buttons { display: flex; gap: 8px; justify-content: center; }
+.win-buttons button { margin-top: 12px; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
 /* Sparkle particles */
 .sparkle {
     position: absolute;
@@ -283,6 +286,17 @@ h1 {
             </div>
         </div>
     </div>
+    <!-- Win Overlay -->
+    <div id="win-message" class="overlay hidden">
+        <div class="overlay-box">
+            <h2>🎉 You evolved the Dragon!</h2>
+            <p>Score: <strong id="win-score">0</strong></p>
+            <div class="win-buttons">
+                <button onclick="keepPlaying();">Keep Playing</button>
+                <button onclick="startGame(); hideOverlay('win-message');">New Game</button>
+            </div>
+        </div>
+    </div>
     <!-- Collection Overlay -->
     <div id="collection-overlay" class="overlay hidden">
         <div class="overlay-box">
@@ -322,6 +336,8 @@ let gameOver = false;
 let won = false;
 let keepPlaying = false;
 let discovered = {}; // {value: true} for pet values discovered
+let lastScore = 0; // previous score, for +N float animation
+let isProcessing = false; // anti-spam flag during animation
 
 // ==================== DOM REFS ====================
 const boardEl = document.getElementById('board');
@@ -348,6 +364,19 @@ function formatScore(s) {
     if (s < 1000) return String(s);
     if (s < 1000000) return (s/1000).toFixed(1).replace(/\.0$/,'')+'k';
     return (s/1000000).toFixed(1).replace(/\.0$/,'')+'m';
+}
+function showScoreIncrease(increase) {
+    if (increase <= 0) return;
+    const floatEl = document.createElement('div');
+    floatEl.className = 'score-increase';
+    floatEl.textContent = `+${increase}`;
+    const scoreRect = scoreEl.getBoundingClientRect();
+    const appRect = document.getElementById('app').getBoundingClientRect();
+    floatEl.style.left = (scoreRect.left - appRect.left + scoreRect.width/2) + 'px';
+    floatEl.style.top = (scoreRect.top - appRect.top) + 'px';
+    floatEl.style.fontSize = '24px';
+    document.getElementById('app').appendChild(floatEl);
+    setTimeout(()=>floatEl.remove(), 800);
 }
 
 // ==================== COLLECTION ====================
@@ -562,6 +591,8 @@ function render() {
     });
 }
 function renderWithAnimation(moveInfo, newTile, onDone) {
+    if (score > lastScore) showScoreIncrease(score - lastScore);
+    lastScore = score;
     scoreEl.textContent = formatScore(score);
     bestEl.textContent = formatScore(best);
     buildGridBackground();
@@ -640,6 +671,7 @@ function restoreUndo() {
     won = undoState.won;
     nextTileId = undoState.nextTileId;
     undoState = null;
+    lastScore = score;
     tileElements.forEach(t=>t.remove());
     tileElements.clear();
     render();
@@ -648,9 +680,33 @@ function restoreUndo() {
 function saveBest() {
     if (score>best) { best=score; localStorage.setItem('petmerge_best',best); }
 }
+function saveGameState() {
+    const state = {
+        grid: grid.map(r=>r.map(c=>c?{...c}:null)),
+        score, best, gameOver, won, keepPlaying, nextTileId, discovered
+    };
+    localStorage.setItem('petmerge_state', JSON.stringify(state));
+}
+function loadGameState() {
+    const saved = localStorage.getItem('petmerge_state');
+    if (!saved) return false;
+    try {
+        const s = JSON.parse(saved);
+        grid = s.grid.map(r=>r.map(c=>c?{...c}:null));
+        score = s.score; best = s.best; gameOver = s.gameOver;
+        won = s.won; keepPlaying = s.keepPlaying;
+        nextTileId = s.nextTileId; discovered = s.discovered || {};
+        return true;
+    } catch(e) { return false; }
+}
+function updateUndoButton() {
+    const btn = document.getElementById('undo-btn');
+    if (btn) btn.disabled = !undoState;
+}
 function startGame() {
     initGrid();
     score=0; gameOver=false; won=false; keepPlaying=false;
+    lastScore = 0;
     if (!best) { const s=localStorage.getItem('petmerge_best'); best=s?parseInt(s):0; }
     tileElements.forEach(t=>t.remove());
     tileElements.clear();
@@ -658,26 +714,51 @@ function startGame() {
     saveUndo();
     render();
     saveBest();
+    saveGameState();
+    updateUndoButton();
 }
 function handleMove(direction) {
-    if (gameOver) return;
+    if (isProcessing || gameOver) return;
     saveUndo();
     const moveInfo = moveGrid(direction);
     if (!moveInfo) { undoState=null; return; }
+    isProcessing = true;
     const newTile = spawnTile();
     renderWithAnimation(moveInfo, newTile, ()=>{
+        isProcessing = false;
         saveBest();
         updateCollectionCount();
+        saveGameState();
+        updateUndoButton();
         if (!canMove() && !gameOver) {
             gameOver=true;
+            saveGameState();
             setTimeout(()=>{
                 document.getElementById('final-score').textContent = formatScore(score);
                 document.getElementById('final-pets').textContent = Object.keys(discovered).length;
                 document.getElementById('game-over').classList.remove('hidden');
             }, 400);
         }
-        if (!won && checkWin()) { won=true; }
+        if (!won && checkWin()) {
+            won=true;
+            saveGameState();
+            setTimeout(()=>{
+                document.getElementById('win-score').textContent = formatScore(score);
+                document.getElementById('win-message').classList.remove('hidden');
+            }, 400);
+        }
     });
+}
+function keepPlaying() {
+    hideOverlay('win-message');
+    keepPlaying = true;
+    saveGameState();
+}
+function confirmNewGame(callback) {
+    if (score > 0 && !gameOver) {
+        if (!confirm('Start a new game? Current progress will be lost.')) return;
+    }
+    callback();
 }
 
 // ==================== OVERLAY ====================
@@ -703,9 +784,13 @@ document.addEventListener('touchend', e=>{
 });
 
 // ==================== BUTTONS ====================
-document.getElementById('restart-btn').addEventListener('click', ()=>startGame());
+document.getElementById('restart-btn').addEventListener('click', ()=>{ confirmNewGame(()=>{ startGame(); }); });
 document.getElementById('undo-btn').addEventListener('click', ()=>{
-    if (restoreUndo()) saveBest();
+    if (restoreUndo()) {
+        saveBest();
+        saveGameState();
+        updateUndoButton();
+    }
 });
 document.getElementById('collection-btn').addEventListener('click', ()=>{
     renderCollection();
@@ -713,7 +798,20 @@ document.getElementById('collection-btn').addEventListener('click', ()=>{
 });
 
 // ==================== START ====================
-startGame();
+function initGame() {
+    if (loadGameState()) {
+        tileElements.forEach(t=>t.remove());
+        tileElements.clear();
+        render();
+        updateCollectionCount();
+        updateUndoButton();
+        if (gameOver) document.getElementById('game-over').classList.remove('hidden');
+        if (won && !keepPlaying) document.getElementById('win-message').classList.remove('hidden');
+    } else {
+        startGame();
+    }
+}
+initGame();
 </script>
 </body>
 </html>
