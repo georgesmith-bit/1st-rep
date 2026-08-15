@@ -255,7 +255,7 @@ h1 {
     <div class="game-intro">
         <span>Merge pets, collect them all! 🐾</span>
         <div class="buttons">
-            <button id="collection-btn" title="Collection Book">📖 <span id="collection-count">0/15</span></button>
+            <button id="collection-btn" title="Collection Book">📖 <span id="collection-count">0/12</span></button>
             <button id="undo-btn">↩ Undo</button>
             <button id="restart-btn">🔄 New</button>
         </div>
@@ -348,7 +348,7 @@ function discoverPet(value) {
 }
 function updateCollectionCount() {
     const count = Object.keys(discovered).length;
-    collectionCountEl.textContent = count + '/15';
+    collectionCountEl.textContent = count + '/' + Object.keys(PETS).length;
 }
 function renderCollection() {
     const grid = document.getElementById('collection-grid');
