@@ -155,20 +155,45 @@ function updateUndoButton() {
     undoBtn.disabled = !canUndo();
 }
 
-// Dark mode toggle
-const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = themeToggle.querySelector('.theme-icon');
+// Settings menu (gear)
+const settingsBtn = document.getElementById('settings-btn');
+const settingsMenu = document.getElementById('settings-menu');
+const settingsBackdrop = document.getElementById('settings-backdrop');
+const menuTutorial = document.getElementById('menu-tutorial');
+const menuTheme = document.getElementById('menu-theme');
+const menuThemeIcon = document.getElementById('menu-theme-icon');
 const savedTheme = localStorage.getItem('theme') || 'light';
+
+function updateThemeIcon() {
+    const isDark = document.body.classList.contains('dark-mode');
+    if (menuThemeIcon) menuThemeIcon.textContent = isDark ? '☀️' : '🌙';
+}
 
 if (savedTheme === 'dark') {
     document.body.classList.add('dark-mode');
-    themeIcon.textContent = '☀️';
 }
+updateThemeIcon();
 
-themeToggle.addEventListener('click', () => {
+settingsBtn.addEventListener('click', () => {
+    settingsMenu.classList.add('open');
+});
+
+settingsBackdrop.addEventListener('click', () => {
+    settingsMenu.classList.remove('open');
+});
+
+menuTutorial.addEventListener('click', () => {
+    const p = location.pathname;
+    let tutorialPath = '/how-to-play/';
+    if (p.indexOf('/zh/') !== -1) tutorialPath = '/zh/how-to-play/';
+    else if (p.indexOf('/vi/') !== -1) tutorialPath = '/vi/how-to-play/';
+    location.href = tutorialPath;
+});
+
+menuTheme.addEventListener('click', () => {
     const isDark = document.body.classList.toggle('dark-mode');
-    themeIcon.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon();
     trackThemeToggle(isDark ? 'dark' : 'light');
 });
 

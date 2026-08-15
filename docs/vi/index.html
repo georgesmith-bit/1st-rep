@@ -77,8 +77,8 @@
                     <div class="score-label">CAO NHẤT</div>
                     <div class="score-value" id="best">0</div>
                 </div>
-                <button id="theme-toggle" class="theme-toggle" aria-label="Chuyển đổi chế độ tối">
-                    <span class="theme-icon">🌙</span>
+                <button id="settings-btn" class="settings-btn" aria-label="Cài đặt">
+                    <span class="settings-icon">⚙️</span>
                 </button>
             </div>
         </header>
@@ -110,5 +110,18 @@
         </div>
     </div>
     <script type="module" src="../js/main.js?v=15"></script>
+    <div id="settings-menu" class="settings-menu">
+        <div class="settings-backdrop" id="settings-backdrop"></div>
+        <div class="settings-sheet">
+            <div class="settings-item" id="menu-tutorial">
+                <span class="settings-item-icon">📖</span>
+                <span class="settings-item-label">Hướng dẫn</span>
+            </div>
+            <div class="settings-item" id="menu-theme">
+                <span class="settings-item-icon" id="menu-theme-icon">🌙</span>
+                <span class="settings-item-label">Chế độ tối</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

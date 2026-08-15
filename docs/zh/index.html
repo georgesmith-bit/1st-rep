@@ -77,8 +77,8 @@
                     <div class="score-label">最高</div>
                     <div class="score-value" id="best">0</div>
                 </div>
-                <button id="theme-toggle" class="theme-toggle" aria-label="切换深色模式">
-                    <span class="theme-icon">🌙</span>
+                <button id="settings-btn" class="settings-btn" aria-label="设置">
+                    <span class="settings-icon">⚙️</span>
                 </button>
             </div>
         </header>
@@ -110,5 +110,18 @@
         </div>
     </div>
     <script type="module" src="../js/main.js?v=15"></script>
+    <div id="settings-menu" class="settings-menu">
+        <div class="settings-backdrop" id="settings-backdrop"></div>
+        <div class="settings-sheet">
+            <div class="settings-item" id="menu-tutorial">
+                <span class="settings-item-icon">📖</span>
+                <span class="settings-item-label">教程</span>
+            </div>
+            <div class="settings-item" id="menu-theme">
+                <span class="settings-item-icon" id="menu-theme-icon">🌙</span>
+                <span class="settings-item-label">深色模式</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -383,3 +383,62 @@ h1 {
 #keep-playing-btn:hover, #new-game-btn:hover {
     background: #9f8b77;
 }
+
+/* Settings menu (gear) */
+.settings-btn {
+    background: var(--btn-bg);
+    border: none;
+    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.settings-btn:hover { background: var(--btn-hover); }
+.settings-icon { font-size: 20px; line-height: 1; }
+
+.settings-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+}
+.settings-menu.open { pointer-events: auto; }
+
+.settings-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.settings-menu.open .settings-backdrop { opacity: 1; }
+
+.settings-sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-color);
+    border-radius: 12px 12px 0 0;
+    padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform 0.3s;
+}
+.settings-menu.open .settings-sheet { transform: translateY(0); }
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--cell-bg);
+    color: var(--text-color);
+}
+.settings-item:last-child { border-bottom: none; }
+.settings-item-icon { font-size: 20px; line-height: 1; }
+.settings-item-label { flex: 1; font-size: 16px; }
