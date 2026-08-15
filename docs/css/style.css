@@ -384,9 +384,9 @@ h1 {
     background: #9f8b77;
 }
 
-/* Settings menu (gear) */
+/* Settings menu (gear) — X5-kernel-safe: no var(), no transform, no env()/calc, no flex-gap */
 .settings-btn {
-    background: var(--btn-bg);
+    background: #8f7a66;
     border: none;
     border-radius: 6px;
     width: 40px;
@@ -395,9 +395,8 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
 }
-.settings-btn:hover { background: var(--btn-hover); }
+.settings-btn:hover { background: #9f8b77; }
 .settings-icon { font-size: 20px; line-height: 1; }
 
 .settings-menu {
@@ -407,9 +406,9 @@ h1 {
     right: 0;
     bottom: 0;
     z-index: 100;
-    pointer-events: none;
+    display: none;
 }
-.settings-menu.open { pointer-events: auto; }
+.settings-menu.open { display: block; }
 
 .settings-backdrop {
     position: absolute;
@@ -418,33 +417,33 @@ h1 {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity 0.3s;
 }
-.settings-menu.open .settings-backdrop { opacity: 1; }
 
 .settings-sheet {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--bg-color);
+    background: #faf8ef;
     border-radius: 12px 12px 0 0;
-    padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
-    transform: translateY(100%);
-    transition: transform 0.3s;
+    padding: 8px 16px 24px;
 }
-.settings-menu.open .settings-sheet { transform: translateY(0); }
 
 .settings-item {
     display: flex;
     align-items: center;
-    gap: 12px;
     height: 56px;
     cursor: pointer;
-    border-bottom: 1px solid var(--cell-bg);
-    color: var(--text-color);
+    border-bottom: 1px solid #eee4da;
+    color: #776e65;
+    font-size: 16px;
 }
 .settings-item:last-child { border-bottom: none; }
-.settings-item-icon { font-size: 20px; line-height: 1; }
-.settings-item-label { flex: 1; font-size: 16px; }
+.settings-item-icon { font-size: 20px; line-height: 1; margin-right: 12px; }
+.settings-item-label { flex: 1; }
+
+/* Dark mode overrides */
+body.dark-mode .settings-btn { background: #555; }
+body.dark-mode .settings-btn:hover { background: #666; }
+body.dark-mode .settings-sheet { background: #1a1a1a; }
+body.dark-mode .settings-item { color: #e0e0e0; border-color: #3a3a3a; }
