@@ -98,6 +98,10 @@ export function loadGameState() {
     try {
         const state = JSON.parse(saved);
         grid = state.grid.map(row => row.map(cell => cell ? { ...cell } : null));
+        // Guard: an empty grid (all null) is an invalid save — treat as no save
+        // so initGame() falls through to startGame() and spawns fresh tiles.
+        const hasTiles = grid.some(row => row.some(cell => cell !== null));
+        if (!hasTiles) return false;
         gameState.score = state.score;
         gameState.best = state.best;
         gameState.gameOver = state.gameOver;

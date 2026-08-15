@@ -1,6 +1,6 @@
 // ==================== Game Entry ====================
 
-import { initGrid, grid, loadBest, gameState, saveGameState, loadGameState, restoreUndoState, canUndo } from './data.js';
+import { initGrid, grid, loadBest, gameState, saveGameState, loadGameState, restoreUndoState, canUndo } from './data.js?v=2';
 import { spawnTile, move, canMove, checkWin } from './board.js';
 import { initInput } from './input.js';
 import { render, renderWithAnimation, showGameOver, hideGameOver, showWin, hideWin } from './ui.js';
