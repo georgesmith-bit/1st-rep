@@ -21,6 +21,9 @@
     --tile-glow-mythic: linear-gradient(135deg, #ff80ab, #ce93d8, #4fc3f7, #ffd54f);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+    overscroll-behavior: none;
+}
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: var(--bg);
@@ -29,7 +32,12 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow-x: hidden;
+    min-height: 100dvh;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 #app {
     width: 100%;
@@ -95,6 +103,9 @@ h1 {
     background: var(--board-bg);
     border-radius: 8px;
     overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 #board {
     position: relative;
@@ -673,6 +684,11 @@ document.addEventListener('keydown', e=>{
 });
 let touchStartX=0, touchStartY=0;
 document.addEventListener('touchstart', e=>{ touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; }, {passive:true});
+// 阻止棋盘区域的触摸被浏览器解释为滚动/缩放（兜底，配合 CSS touch-action:none）
+document.addEventListener('touchmove', e=>{
+    const t = e.target;
+    if (t && t.closest && t.closest('#board-container')) e.preventDefault();
+}, {passive:false});
 document.addEventListener('touchend', e=>{
     const dx=e.changedTouches[0].clientX-touchStartX;
     const dy=e.changedTouches[0].clientY-touchStartY;
