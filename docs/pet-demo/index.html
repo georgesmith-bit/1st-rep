@@ -510,6 +510,11 @@ function buildGridBackground() {
     }
     gridBackgroundBuilt = true;
 }
+function setTilePos(tile, left, top, cellSize) {
+    // 同时设置 transform 和 transform-origin，确保 scale 动画围绕视觉中心膨胀
+    tile.style.transform = `translate(${left}px,${top}px)`;
+    tile.style.transformOrigin = `${left + cellSize/2}px ${top + cellSize/2}px`;
+}
 function createTileElement(id, value, r, c) {
     updateLayoutCache();
     const {cellSize} = layoutCache;
@@ -519,7 +524,8 @@ function createTileElement(id, value, r, c) {
     tile.className = 'tile';
     tile.dataset.id = id;
     tile.setAttribute('data-rarity', pet.rarity);
-    tile.style.cssText = `width:${cellSize}px;height:${cellSize}px;transform:translate(${pos.left}px,${pos.top}px)`;
+    tile.style.cssText = `width:${cellSize}px;height:${cellSize}px`;
+    setTilePos(tile, pos.left, pos.top, cellSize);
     const inner = document.createElement('div');
     inner.className = 'tile-inner';
     const emojiSize = cellSize * 0.35;
@@ -564,7 +570,7 @@ function renderWithAnimation(moveInfo, newTile, onDone) {
         const tile = tileElements.get(move.id);
         if (!tile) continue;
         const pos = getTilePosition(move.toRow, move.toCol);
-        tile.style.transform = `translate(${pos.left}px,${pos.top}px)`;
+        setTilePos(tile, pos.left, pos.top, layoutCache.cellSize);
     }
     setTimeout(()=>{
         for (const merge of merges) {
