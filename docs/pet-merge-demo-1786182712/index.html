@@ -389,51 +389,63 @@ function spawnTile() {
     grid[r][c] = {id, value};
     return {id, value, r, c};
 }
-function slideRow(row, rowIdx, colIdx) {
-    const moves=[], merges=[];
-    const filtered = row.filter(v=>v!==null);
-    const result=[];
-    for (let i=0;i<filtered.length;i++) {
-        if (i<filtered.length-1 && filtered[i].value===filtered[i+1].value) {
-            const newVal = filtered[i].value*2;
-            score += newVal;
-            moves.push({id:filtered[i].id,fromRow:rowIdx,fromCol:colIdx[i],toRow:rowIdx,toCol:result.length,merge:true});
-            moves.push({id:filtered[i+1].id,fromRow:rowIdx,fromCol:colIdx[i+1],toRow:rowIdx,toCol:result.length,merge:true,disappear:true});
-            result.push({id:filtered[i].id,value:newVal});
-            merges.push({id:filtered[i].id,row:rowIdx,col:result.length-1,value:newVal});
-            i++;
-        } else {
-            moves.push({id:filtered[i].id,fromRow:rowIdx,fromCol:colIdx[i],toRow:rowIdx,toCol:result.length,merge:false});
-            result.push(filtered[i]);
-        }
-    }
-    return {moves, merges, result};
-}
 function moveGrid(direction) {
-    let anyMoved=false;
-    const allMoves=[], allMerges=[];
     const newGrid = Array.from({length:GRID_SIZE},()=>Array(GRID_SIZE).fill(null));
-    const traversalOrder = (direction==='down'||direction==='right') ? [3,2,1,0] : [0,1,2,3];
-    for (let i=0;i<GRID_SIZE;i++) {
-        const idx = traversalOrder[i];
-        let row, colIdxList;
-        if (direction==='left'||direction==='right') {
-            row = grid[idx].map((cell,j)=>cell?{id:cell.id,value:cell.value,_origCol:j}:null);
-            colIdxList = row.map((c,i)=>c?c._origCol:-1);
-        } else {
-            row = grid.map((r,j)=>r[idx]?{id:r[idx].id,value:r[idx].value,_origRow:j}:null);
-            colIdxList = row.map(c=>c?c._origRow:-1);
+    const allMoves = [], allMerges = [];
+    let anyMoved = false;
+    const vertical = (direction==='up'||direction==='down');
+    const isReverse = (direction==='right'||direction==='down');
+
+    for (let lineIdx = 0; lineIdx < GRID_SIZE; lineIdx++) {
+        // 提取一条线（行或列），元素带原始坐标
+        let line = [];
+        for (let k = 0; k < GRID_SIZE; k++) {
+            const r = vertical ? k : lineIdx;
+            const c = vertical ? lineIdx : k;
+            const cell = grid[r][c];
+            if (cell) line.push({id:cell.id, value:cell.value, r, c});
         }
-        const {moves,merges,result} = slideRow(row, idx, colIdxList);
-        if (direction==='right'||direction==='down') result.reverse();
-        for (let j=0;j<GRID_SIZE;j++) {
-            if (direction==='left'||direction==='right') newGrid[idx][j]=result[j]||null;
-            else newGrid[j][idx]=result[j]||null;
+        // right/down：反向，使"向左压紧合并"等价于"向右/向下"
+        if (isReverse) line.reverse();
+
+        const result = [];
+        let j = 0;
+        while (j < line.length) {
+            if (j < line.length - 1 && line[j].value === line[j+1].value) {
+                const nv = line[j].value * 2;
+                score += nv;
+                const targetIdx = result.length;
+                const finalIdx = isReverse ? (GRID_SIZE - 1 - targetIdx) : targetIdx;
+                const toR = vertical ? finalIdx : lineIdx;
+                const toC = vertical ? lineIdx : finalIdx;
+                allMoves.push({id:line[j].id, fromRow:line[j].r, fromCol:line[j].c, toRow:toR, toCol:toC, merge:true});
+                allMoves.push({id:line[j+1].id, fromRow:line[j+1].r, fromCol:line[j+1].c, toRow:toR, toCol:toC, merge:true, disappear:true});
+                result.push({id:line[j].id, value:nv});
+                allMerges.push({id:line[j].id, row:toR, col:toC, value:nv});
+                j += 2;
+            } else {
+                const targetIdx = result.length;
+                const finalIdx = isReverse ? (GRID_SIZE - 1 - targetIdx) : targetIdx;
+                const toR = vertical ? finalIdx : lineIdx;
+                const toC = vertical ? lineIdx : finalIdx;
+                allMoves.push({id:line[j].id, fromRow:line[j].r, fromCol:line[j].c, toRow:toR, toCol:toC, merge:false});
+                result.push({id:line[j].id, value:line[j].value});
+                j++;
+            }
         }
-        if (moves.some(m=>m.fromCol!==m.toCol||m.fromRow!==m.toRow||m.merge)) anyMoved=true;
-        allMoves.push(...moves);
-        allMerges.push(...merges);
+
+        for (let m = 0; m < result.length; m++) {
+            const finalIdx = isReverse ? (GRID_SIZE - 1 - m) : m;
+            const r = vertical ? finalIdx : lineIdx;
+            const c = vertical ? lineIdx : finalIdx;
+            newGrid[r][c] = {id:result[m].id, value:result[m].value};
+        }
     }
+
+    for (const mv of allMoves) {
+        if (mv.fromRow !== mv.toRow || mv.fromCol !== mv.toCol || mv.merge) { anyMoved = true; break; }
+    }
+
     if (!anyMoved) return null;
     grid = newGrid;
     return {moves:allMoves, merges:allMerges};
