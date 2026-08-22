@@ -299,6 +299,16 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
             </div>
         </div>
     </div>
+    <!-- Unicorn (Ultimate Pet) Overlay -->
+    <div id="unicorn-message" class="overlay hidden">
+        <div class="overlay-box">
+            <h2>🦄 Ultimate Pet Unlocked!</h2>
+            <p>You evolved the Unicorn — the rarest pet of all!</p>
+            <div class="win-buttons">
+                <button onclick="hideOverlay('unicorn-message');">Keep Playing</button>
+            </div>
+        </div>
+    </div>
     <!-- Collection Overlay -->
     <div id="collection-overlay" class="overlay hidden">
         <div class="overlay-box">
@@ -322,9 +332,9 @@ const PETS = {
     128:  { emoji: '🦈', name: 'Shark',   rarity: 'epic',      color: '#ce93d8' },
     256:  { emoji: '🐯', name: 'Tiger',   rarity: 'epic',      color: '#ce93d8' },
     512:  { emoji: '🐊', name: 'Croco',   rarity: 'epic',      color: '#ce93d8' },
-    1024: { emoji: '🔥', name: 'Phoenix', rarity: 'legendary',  color: '#ffd54f' },
+    1024: { emoji: '🦚', name: 'Peacock', rarity: 'legendary',  color: '#ffd54f' },
     2048: { emoji: '🐉', name: 'Dragon',  rarity: 'legendary',  color: '#ffd54f' },
-    4096: { emoji: '👑', name: 'Celestial', rarity: 'mythic',   color: '#ff80ab' },
+    4096: { emoji: '🦄', name: 'Unicorn', rarity: 'mythic',   color: '#ff80ab' },
 };
 
 // ==================== GAME STATE ====================
@@ -668,6 +678,12 @@ function renderWithAnimation(moveInfo, newTile, onDone) {
                             updateCollectionCount();
                         }, 400);
                     }
+                    // Ultimate pet (Unicorn = 4096) unlock celebration
+                    if (merge.value >= 4096) {
+                        setTimeout(()=>{
+                            document.getElementById('unicorn-message').classList.remove('hidden');
+                        }, 600);
+                    }
                 }
                 const secondTile = tileElements.get(mergeMoves[1].id);
                 if (secondTile) secondTile.remove();
@@ -817,7 +833,8 @@ function confirmNewGame(callback) {
 function hideOverlay(id) { document.getElementById(id).classList.add('hidden'); }
 function isOverlayOpen() {
     return !document.getElementById('collection-overlay').classList.contains('hidden')
-        || !document.getElementById('win-message').classList.contains('hidden');
+        || !document.getElementById('win-message').classList.contains('hidden')
+        || !document.getElementById('unicorn-message').classList.contains('hidden');
 }
 
 // 窗口尺寸变化时重算棋盘布局（原版有，重写时曾遗漏）
