@@ -770,6 +770,19 @@ function isOverlayOpen() {
         || !document.getElementById('win-message').classList.contains('hidden');
 }
 
+// 窗口尺寸变化时重算棋盘布局（原版有，重写时曾遗漏）
+let resizeTimer;
+window.addEventListener('resize', ()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>{
+        gridBackgroundBuilt = false;
+        layoutCache.boardWidth = 0;
+        tileElements.clear();
+        boardEl.querySelectorAll('.tile').forEach(tile=>tile.remove());
+        render();
+    }, 150);
+});
+
 // ==================== INPUT ====================
 document.addEventListener('keydown', e=>{
     const map = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
