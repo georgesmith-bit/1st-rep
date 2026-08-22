@@ -284,6 +284,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
                 <p>Score: <strong id="final-score">0</strong></p>
                 <p>Pets Discovered: <strong id="final-pets">0</strong></p>
                 <button onclick="startGame(); hideOverlay('game-over');">Try Again</button>
+                <button onclick="undoMove();" id="gameover-undo-btn">↩ Undo</button>
             </div>
         </div>
     </div>
@@ -683,6 +684,17 @@ function restoreUndo() {
 function saveBest() {
     if (score>best) { best=score; localStorage.setItem('petmerge_best',best); }
 }
+function undoMove() {
+    // 撤销一步（含 game over 后挽回：隐藏 game-over 弹窗）
+    if (restoreUndo()) {
+        saveBest();
+        hideOverlay('game-over');
+        saveGameState();
+        updateUndoButton();
+        return true;
+    }
+    return false;
+}
 function saveGameState() {
     const state = {
         grid: grid.map(r=>r.map(c=>c?{...c}:null)),
@@ -813,11 +825,7 @@ document.addEventListener('touchend', e=>{
 document.getElementById('restart-btn').addEventListener('click', (e)=>{ e.currentTarget.blur(); confirmNewGame(()=>{ startGame(); }); });
 document.getElementById('undo-btn').addEventListener('click', (e)=>{
     e.currentTarget.blur();
-    if (restoreUndo()) {
-        saveBest();
-        saveGameState();
-        updateUndoButton();
-    }
+    undoMove();
 });
 document.getElementById('collection-btn').addEventListener('click', (e)=>{
     e.currentTarget.blur();
