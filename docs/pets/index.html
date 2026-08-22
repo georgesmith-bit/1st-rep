@@ -991,6 +991,21 @@ function keepPlaying() {
     continuedAfterWin = true;
     saveGameState();
 }
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    let line = '';
+    for (const ch of text) {
+        const test = line + ch;
+        if (line && ctx.measureText(test).width > maxWidth) {
+            ctx.fillText(line, x, y);
+            line = ch;
+            y += lineHeight;
+        } else {
+            line = test;
+        }
+    }
+    if (line) ctx.fillText(line, x, y);
+    return y;
+}
 function downloadUnicornCard() {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
@@ -1021,10 +1036,14 @@ function downloadUnicornCard() {
     ctx.font = '380px Arial, sans-serif';
     ctx.fillText('🦄', 540, 620);
 
-    // 成就文案
+    // 成就标题（去掉 emoji，因为上面已有大 🦄）
     ctx.fillStyle = '#8e7a66';
-    ctx.font = 'bold 52px Arial, sans-serif';
-    ctx.fillText(T.unicornDesc, 540, 900);
+    ctx.font = 'bold 60px Arial, sans-serif';
+    ctx.fillText(T.unicornTitle.replace(/^🦄\s*/, ''), 540, 880);
+
+    // 成就描述（自动换行，避免溢出）
+    ctx.font = '44px Arial, sans-serif';
+    wrapText(ctx, T.unicornDesc, 540, 960, 880, 58);
 
     // 网站
     ctx.fillStyle = '#776e65';
