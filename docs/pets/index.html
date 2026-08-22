@@ -1165,6 +1165,19 @@ function initGame() {
         startGame();
     }
 }
+// 测试模式：?test=unicorn 注入两个相邻 2048（快速测试合成独角兽）
+(function(){
+    const test = new URLSearchParams(location.search).get('test');
+    if (test === 'unicorn') {
+        localStorage.setItem('petmerge_state', JSON.stringify({
+            grid: [[{id:1,value:2048},{id:2,value:2048},null,null],[null,null,null,null],[null,null,null,null],[null,null,null,null]],
+            score: 20000, best: 20000, gameOver: false, won: true, continuedAfterWin: true,
+            nextTileId: 3,
+            discovered: {2:1,4:1,8:1,16:1,32:1,64:1,128:1,256:1,512:1,1024:1,2048:1},
+            undoState: null
+        }));
+    }
+})();
 initGame();
 </script>
 </body>
