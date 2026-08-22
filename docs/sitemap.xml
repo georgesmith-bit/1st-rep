@@ -51,4 +51,14 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://live2048.com/pets/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/pets/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://live2048.com/pets/?lang=vi"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/"/>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

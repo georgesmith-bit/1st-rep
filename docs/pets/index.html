@@ -2,10 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-store">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Unicorn Merge</title>
+<meta name="description" content="Play Unicorn Merge online for free! Merge cute pets from Slime to Unicorn, evolve them and collect all 12. No downloads, works on mobile and desktop.">
+<meta property="og:title" content="Unicorn Merge — Merge Cute Pets Game">
+<meta property="og:description" content="Merge cute pets, evolve from Slime to Unicorn, collect them all! Free online puzzle game.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://live2048.com/pets/">
+<meta property="og:image" content="https://live2048.com/og-image-pets.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Unicorn Merge — Merge Cute Pets Game">
+<meta name="twitter:description" content="Merge cute pets, evolve from Slime to Unicorn, collect them all!">
+<link rel="canonical" href="https://live2048.com/pets/">
+<link rel="alternate" hreflang="en" href="https://live2048.com/pets/">
+<link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/?lang=zh">
+<link rel="alternate" hreflang="vi" href="https://live2048.com/pets/?lang=vi">
+<link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/">
+<title>Unicorn Merge — Merge Cute Pets Game</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Unicorn Merge",
+  "description": "Merge cute pets, evolve from Slime to Unicorn, and collect all 12. Free online puzzle game.",
+  "url": "https://live2048.com/pets/",
+  "image": "https://live2048.com/og-image-pets.svg",
+  "playMode": "SinglePlayer",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web Browser",
+  "genre": "Puzzle",
+  "inLanguage": ["en", "zh-CN", "vi"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+<script>
+    if (!location.search.includes('notrack')) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S0NZ96NCB1');
+    }
+</script>
 <style>
 :root {
     --bg: #faf8ef;
@@ -397,6 +439,11 @@ const TITLES = {
     zh: '合成独角兽 — 宠物合成游戏',
     vi: 'Unicorn Merge — Trò chơi ghép thú cưng'
 };
+const DESCRIPTIONS = {
+    en: 'Play Unicorn Merge online for free! Merge cute pets from Slime to Unicorn, evolve them and collect all 12.',
+    zh: '免费在线玩合成独角兽！合并可爱宠物，从史莱姆进化到独角兽，收集全部 12 只。',
+    vi: 'Chơi Unicorn Merge miễn phí trực tuyến! Ghép thú cưng dễ thương, tiến hóa từ Slime đến Kỳ lân, thu thập đủ 12 con.'
+};
 function applyI18n() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const k = el.dataset.i18n;
@@ -407,6 +454,13 @@ function applyI18n() {
         if (T[k] !== undefined) el.title = T[k];
     });
     document.title = TITLES[LANG] || TITLES.en;
+    const d = DESCRIPTIONS[LANG] || DESCRIPTIONS.en;
+    const md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute('content', d);
+    const ogd = document.querySelector('meta[property="og:description"]');
+    if (ogd) ogd.setAttribute('content', d);
+    const ogt = document.querySelector('meta[property="og:title"]');
+    if (ogt) ogt.setAttribute('content', TITLES[LANG] || TITLES.en);
 }
 applyI18n();
 
