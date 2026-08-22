@@ -32,6 +32,10 @@
         .guide a { color: #776e65; font-weight: bold; }
         .guide .play-btn { display: inline-block; margin: 2rem 0; padding: 14px 36px; background: #8f7a66; color: #f9f6f2; font-size: 1.2rem; font-weight: bold; border-radius: 6px; text-decoration: none; }
         .guide .play-btn:hover { background: #9f8a76; }
+        .guide .btn-group { text-align: center; margin: 1.5rem 0; }
+        .guide .btn-group .play-btn { margin: 0 6px 8px; }
+        .guide .unicorn-btn { background: #f7eef2; color: #a85878; border: 2px solid #e290b0; }
+        .guide .unicorn-btn:hover { background: #f1dfe8; border-color: #cf7a9e; }
         .guide .tip-box { background: #faf8ef; border-left: 4px solid #f0b27a; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
         .guide .mistake-box { background: #fff5f5; border-left: 4px solid #e57373; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
         .guide code { background: #eee4da; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
@@ -77,8 +81,12 @@
         <div class="guide">
             <h1>Cách Chơi 2048 — Hướng Dẫn Từ Cơ Bản Đến Nâng Cao</h1>
             <p style="color:#8e7a66;">Cập nhật: Tháng 8/2026 · 6 phút đọc</p>
-            <p>2048 là một trò chơi giải đố đơn giản nhưng đầy thử thách: trượt các ô số trên lưới 4×4, ghép các số giống nhau, và cố gắng tạo ra ô <strong>2048</strong>. Mất 5 phút để học — và nhiều tuần để thành thạo. Hướng dẫn này bao gồm mọi thứ từ luật cơ bản đến chiến thuật nâng cao.</p>
-            <a class="play-btn" href="/pets/?lang=vi">🎮 Chơi Unicorn Merge Ngay</a>
+            <p>2048 là một trò chơi giải đố đơn giản nhưng đầy thử thách: trượt các ô số trên lưới 4×4, ghép các số giống nhau, và cố gắng tạo ra ô <strong>2048</strong>. Mất 5 phút để học — và nhiều tuần để thành thạo. Hướng dẫn này bao gồm mọi thứ từ luật cơ bản đến chiến thuật nâng cao. Thích thú cưng dễ thương hơn những con số? Chúng tôi cũng có một phiên bản mà mục tiêu cuối cùng là một chú <strong>🦄 kỳ lân</strong> huyền diệu.</p>
+
+            <div class="btn-group">
+                <a class="play-btn" href="/vi/">▶ Chơi 2048 Cổ Điển</a>
+                <a class="play-btn unicorn-btn" href="/pets/?lang=vi">🦄 Chơi Unicorn Merge</a>
+            </div>
 
             <h2>1. Bắt Đầu Nhanh: Cách Trò Chơi Hoạt Động</h2>
             <p>Bạn bắt đầu với hai ô (hai ô <code>2</code> hoặc một ô <code>2</code> và một ô <code>4</code>) trên lưới 4×4. Mỗi lượt:</p>
@@ -143,9 +151,15 @@
             <p>Không. Hoàn tác chỉ lùi lại nước đi trước, điểm cũng quay về trạng thái trước đó. Dùng thoải mái để học.</p>
 
             <hr style="border:none; border-top:2px solid #eee4da; margin:3rem 0 2rem;">
+
+            <h2>7. Từ Số Đến Thú Cưng: Unicorn Merge</h2>
+            <p>Đã quen với những con số? Chúng tôi làm lại đúng trò chơi trượt-và-ghép thành <strong>Unicorn Merge</strong> — mỗi ô là một thú cưng đáng yêu, mỗi lần ghép lại tiến hóa thành sinh vật huyền diệu hơn.</p>
+            <p>Cùng luật chơi, cùng chiến thuật, phần thưởng mới: một bộ sưu tập để khám phá khi bạn leo lên nấc thang tiến hóa. Chúng tôi không tiết lộ những gì ở giữa — nhưng sự tiến hóa cuối cùng, mục tiêu tối thượng, là chú <strong>🦄 Kỳ Lân</strong> huyền thoại.</p>
+
             <p style="text-align:center; font-size:1.2rem;">Sẵn sàng áp dụng những mẹo này chưa?</p>
-            <div style="text-align:center;">
-                <a class="play-btn" href="/pets/?lang=vi">🎮 Chơi Unicorn Merge Ngay — Miễn Phí Online</a>
+            <div class="btn-group">
+                <a class="play-btn" href="/vi/">▶ Chơi 2048 Cổ Điển</a>
+                <a class="play-btn unicorn-btn" href="/pets/?lang=vi">🦄 Chơi Unicorn Merge</a>
             </div>
             <p style="text-align:center; color:#8e7a66; margin-top:2rem; font-size:0.85rem;">
                 <a href="/vi/">2048 Game</a> · <a href="/tips/">Mẹo & Chiến Thuật</a> · <a href="/about/">Giới Thiệu</a>

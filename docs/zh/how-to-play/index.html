@@ -32,6 +32,10 @@
         .guide a { color: #776e65; font-weight: bold; }
         .guide .play-btn { display: inline-block; margin: 2rem 0; padding: 14px 36px; background: #8f7a66; color: #f9f6f2; font-size: 1.2rem; font-weight: bold; border-radius: 6px; text-decoration: none; }
         .guide .play-btn:hover { background: #9f8a76; }
+        .guide .btn-group { text-align: center; margin: 1.5rem 0; }
+        .guide .btn-group .play-btn { margin: 0 6px 8px; }
+        .guide .unicorn-btn { background: #f7eef2; color: #a85878; border: 2px solid #e290b0; }
+        .guide .unicorn-btn:hover { background: #f1dfe8; border-color: #cf7a9e; }
         .guide .tip-box { background: #faf8ef; border-left: 4px solid #f0b27a; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
         .guide .mistake-box { background: #fff5f5; border-left: 4px solid #e57373; padding: 1rem 1.2rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
         .guide code { background: #eee4da; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
@@ -77,8 +81,12 @@
         <div class="guide">
             <h1>2048怎么玩 — 从入门到精通的完整攻略</h1>
             <p style="color:#8e7a66;">最后更新：2026年8月 · 阅读约6分钟</p>
-            <p>2048是一款看似简单却深藏不露的数字益智游戏：在4×4的棋盘上滑动数字方块，合并相同的数字，最终目标是合成<strong>2048</strong>方块。5分钟上手，但精通需要数周。这篇攻略涵盖从基础规则到高级策略的全部内容。</p>
-            <a class="play-btn" href="/pets/?lang=zh">🎮 立即开始玩合成独角兽</a>
+            <p>2048是一款看似简单却深藏不露的数字益智游戏：在4×4的棋盘上滑动数字方块，合并相同的数字，最终目标是合成<strong>2048</strong>方块。5分钟上手，但精通需要数周。这篇攻略涵盖从基础规则到高级策略的全部内容。比起数字，你更喜欢可爱的小宠物？我们还做了一个版本，最终目标是合成一只神奇的<strong>🦄独角兽</strong>。</p>
+
+            <div class="btn-group">
+                <a class="play-btn" href="/zh/">▶ 玩经典 2048</a>
+                <a class="play-btn unicorn-btn" href="/pets/?lang=zh">🦄 玩合成独角兽</a>
+            </div>
 
             <h2>1. 快速入门：游戏怎么玩</h2>
             <p>开局时棋盘上随机出现两个方块（两个<code>2</code>，或一个<code>2</code>和一个<code>4</code>）。每次操作：</p>
@@ -143,9 +151,15 @@
             <p>不会。撤销只是回退上一步操作，分数也会回到操作前的状态。放心用，这是学习的工具。</p>
 
             <hr style="border:none; border-top:2px solid #eee4da; margin:3rem 0 2rem;">
+
+            <h2>7. 从数字到宠物：合成独角兽</h2>
+            <p>数字玩腻了？我们把完全相同的滑动合并玩法，重制成了<strong>合成独角兽</strong>——每个方块都是一只可爱的宠物，每次合并都会进化成更神奇的生物。</p>
+            <p>同样的规则、同样的策略，全新的奖励：一边合并一边收集图鉴。我们不剧透中间有哪些宠物——但最终的进化、终极目标，是传说中的<strong>🦄独角兽</strong>。</p>
+
             <p style="text-align:center; font-size:1.2rem;">准备好实践这些技巧了吗？</p>
-            <div style="text-align:center;">
-                <a class="play-btn" href="/pets/?lang=zh">🎮 开始玩合成独角兽——免费在线</a>
+            <div class="btn-group">
+                <a class="play-btn" href="/zh/">▶ 玩经典 2048</a>
+                <a class="play-btn unicorn-btn" href="/pets/?lang=zh">🦄 玩合成独角兽</a>
             </div>
             <p style="text-align:center; color:#8e7a66; margin-top:2rem; font-size:0.85rem;">
                 <a href="/zh/">2048游戏</a> · <a href="/tips/">技巧策略</a> · <a href="/about/">关于</a>
