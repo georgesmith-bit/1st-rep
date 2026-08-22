@@ -83,4 +83,26 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://live2048.com/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/about/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://live2048.com/vi/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://live2048.com/about/"/>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/zh/about/</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/vi/about/</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
