@@ -348,6 +348,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
             <div class="win-buttons">
                 <button onclick="hideOverlay('unicorn-message');" data-i18n="keepPlaying">Keep Playing</button>
                 <button onclick="startGame(); hideOverlay('unicorn-message');" data-i18n="newGame">New Game</button>
+                <button onclick="downloadUnicornCard();" data-i18n="downloadCard">📥 Download Card</button>
             </div>
         </div>
     </div>
@@ -377,13 +378,14 @@ en: {
     keepPlaying:'Keep Playing',
     unicornTitle:'🦄 Ultimate Pet Unlocked!',
     unicornDesc:'You evolved the Unicorn — the rarest pet of all!',
+    downloadCard:'📥 Download Card',
     collectionTitle:'📖 Pet Collection', discovered:'Discovered:', close:'Close',
     toastPrefix:'New pet discovered:',
     confirmNewGame:'Start a new game? Current progress will be lost.',
     pets:{2:'Slime',4:'Cat',8:'Fox',16:'Wolf',32:'Bear',64:'Eagle',128:'Shark',256:'Tiger',512:'Croco',1024:'Peacock',2048:'Dragon',4096:'Unicorn'},
     rarities:{common:'Common',rare:'Rare',epic:'Epic',legendary:'Legendary',mythic:'Mythic'}
 },
-zh: {
+'zh-CN': {
     score:'分数', best:'最高',
     intro:'合并宠物，收集全部！🐾',
     hintTouch:'滑动合并宠物',
@@ -395,11 +397,31 @@ zh: {
     keepPlaying:'继续游戏',
     unicornTitle:'🦄 终极宠物解锁！',
     unicornDesc:'你进化出了独角兽——最稀有的宠物！',
+    downloadCard:'📥 下载卡片',
     collectionTitle:'📖 宠物图鉴', discovered:'已发现：', close:'关闭',
     toastPrefix:'发现新宠物：',
     confirmNewGame:'开始新游戏？当前进度将丢失。',
     pets:{2:'史莱姆',4:'猫',8:'狐狸',16:'狼',32:'熊',64:'鹰',128:'鲨鱼',256:'老虎',512:'鳄鱼',1024:'孔雀',2048:'龙',4096:'独角兽'},
     rarities:{common:'普通',rare:'稀有',epic:'史诗',legendary:'传说',mythic:'神话'}
+},
+'zh-TW': {
+    score:'分數', best:'最高',
+    intro:'合併寵物，收集全部！🐾',
+    hintTouch:'滑動合併寵物',
+    hintKeys:'方向鍵 / WASD 合併寵物',
+    undo:'↩ 復原', newGame:'🔄 新遊戲', collectionBook:'寵物圖鑑',
+    gameOver:'遊戲結束！', scoreLabel:'分數：', petsDiscovered:'已收集寵物：',
+    tryAgain:'再來一局',
+    winTitle:'🎉 你進化出了龍！',
+    keepPlaying:'繼續遊戲',
+    unicornTitle:'🦄 終極寵物解鎖！',
+    unicornDesc:'你進化出了獨角獸——最稀有的寵物！',
+    downloadCard:'📥 下載卡片',
+    collectionTitle:'📖 寵物圖鑑', discovered:'已發現：', close:'關閉',
+    toastPrefix:'發現新寵物：',
+    confirmNewGame:'開始新遊戲？目前進度將遺失。',
+    pets:{2:'史萊姆',4:'貓',8:'狐狸',16:'狼',32:'熊',64:'鷹',128:'鯊魚',256:'老虎',512:'鱷魚',1024:'孔雀',2048:'龍',4096:'獨角獸'},
+    rarities:{common:'普通',rare:'稀有',epic:'史詩',legendary:'傳說',mythic:'神話'}
 },
 vi: {
     score:'ĐIỂM', best:'CAO NHẤT',
@@ -413,6 +435,7 @@ vi: {
     keepPlaying:'Tiếp tục chơi',
     unicornTitle:'🦄 Thú cưng tối thượng đã mở khóa!',
     unicornDesc:'Bạn đã tiến hóa Kỳ lân — thú cưng hiếm nhất!',
+    downloadCard:'📥 Tải thẻ',
     collectionTitle:'📖 Bộ sưu tập thú cưng', discovered:'Đã khám phá:', close:'Đóng',
     toastPrefix:'Phát hiện thú cưng mới:',
     confirmNewGame:'Bắt đầu ván mới? Tiến trình hiện tại sẽ bị mất.',
@@ -424,24 +447,27 @@ function getLang() {
     const p = new URLSearchParams(location.search).get('lang');
     if (p && I18N[p]) return p;
     const nav = (navigator.language || 'en').toLowerCase();
-    if (nav.startsWith('zh')) return 'zh';
+    if (nav.startsWith('zh-tw') || nav.startsWith('zh-hk') || nav.startsWith('zh-mo')) return 'zh-TW';
+    if (nav.startsWith('zh')) return 'zh-CN';
     if (nav.startsWith('vi')) return 'vi';
     return 'en';
 }
 const LANG = getLang();
 const T = I18N[LANG];
-document.documentElement.lang = LANG === 'zh' ? 'zh-CN' : (LANG === 'vi' ? 'vi' : 'en');
+document.documentElement.lang = LANG;
 function petName(value) { return T.pets[value] || (PETS[value] && PETS[value].name) || '?'; }
 function rarityName(r) { return T.rarities[r] || r; }
 
 const TITLES = {
     en: 'Unicorn Merge — Merge Pets Game',
-    zh: '合成独角兽 — 宠物合成游戏',
+    'zh-CN': '合成独角兽 — 宠物合成游戏',
+    'zh-TW': '合併獨角獸 — 寵物合成遊戲',
     vi: 'Unicorn Merge — Trò chơi ghép thú cưng'
 };
 const DESCRIPTIONS = {
     en: 'Play Unicorn Merge online for free! Merge cute pets from Slime to Unicorn, evolve them and collect all 12.',
-    zh: '免费在线玩合成独角兽！合并可爱宠物，从史莱姆进化到独角兽，收集全部 12 只。',
+    'zh-CN': '免费在线玩合成独角兽！合并可爱宠物，从史莱姆进化到独角兽，收集全部 12 只。',
+    'zh-TW': '免費在線玩合併獨角獸！合併可愛寵物，從史萊姆進化到獨角獸，收集全部 12 隻。',
     vi: 'Chơi Unicorn Merge miễn phí trực tuyến! Ghép thú cưng dễ thương, tiến hóa từ Slime đến Kỳ lân, thu thập đủ 12 con.'
 };
 function applyI18n() {
@@ -964,6 +990,60 @@ function keepPlaying() {
     hideOverlay('win-message');
     continuedAfterWin = true;
     saveGameState();
+}
+function downloadUnicornCard() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1350;
+    const ctx = canvas.getContext('2d');
+
+    // 渐变背景
+    const grad = ctx.createLinearGradient(0, 0, 1080, 1350);
+    grad.addColorStop(0, '#f3e5f5');
+    grad.addColorStop(1, '#e1f5fe');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1080, 1350);
+
+    // 内层卡片面板 + 金色边框（mythic 稀有度）
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillRect(60, 60, 960, 1230);
+    ctx.strokeStyle = '#ffd54f';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(60, 60, 960, 1230);
+
+    // 游戏名
+    ctx.fillStyle = '#776e65';
+    ctx.font = 'bold 76px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Unicorn Merge', 540, 200);
+
+    // 独角兽 emoji（大图）
+    ctx.font = '380px Arial, sans-serif';
+    ctx.fillText('🦄', 540, 620);
+
+    // 成就文案
+    ctx.fillStyle = '#8e7a66';
+    ctx.font = 'bold 52px Arial, sans-serif';
+    ctx.fillText(T.unicornDesc, 540, 900);
+
+    // 网站
+    ctx.fillStyle = '#776e65';
+    ctx.font = 'bold 54px Arial, sans-serif';
+    ctx.fillText('live2048.com', 540, 1120);
+
+    // 日期 + 分数
+    const dateStr = new Date().toISOString().slice(0, 10);
+    ctx.fillStyle = '#9e9488';
+    ctx.font = '38px Arial, sans-serif';
+    ctx.fillText(dateStr + '  ·  Score ' + score, 540, 1200);
+
+    // 下载 PNG
+    const link = document.createElement('a');
+    link.download = 'unicorn-merge.png';
+    link.href = canvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 function confirmNewGame(callback) {
     if (score > 0 && !gameOver) {
