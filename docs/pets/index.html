@@ -337,7 +337,6 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
             <p><span data-i18n="scoreLabel">Score:</span> <strong id="win-score">0</strong></p>
             <div class="win-buttons">
                 <button onclick="keepPlaying();" data-i18n="keepPlaying">Keep Playing</button>
-                <button onclick="startGame(); hideOverlay('win-message');" data-i18n="newGame">New Game</button>
             </div>
         </div>
     </div>
@@ -348,6 +347,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
             <p data-i18n="unicornDesc">You evolved the Unicorn — the rarest pet of all!</p>
             <div class="win-buttons">
                 <button onclick="hideOverlay('unicorn-message');" data-i18n="keepPlaying">Keep Playing</button>
+                <button onclick="startGame(); hideOverlay('unicorn-message');" data-i18n="newGame">New Game</button>
             </div>
         </div>
     </div>
