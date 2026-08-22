@@ -64,6 +64,34 @@
       "about": { "@type": "VideoGame", "name": "2048" }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "每次都能达到2048吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "不能——随机性有影响。即使最好的策略，胜率也只有70-80%。关键在于一致性：减少坏操作，你大多数时候都能到2048。" }
+        },
+        {
+          "@type": "Question",
+          "name": "最高能合成多大的方块？",
+          "acceptedAnswer": { "@type": "Answer", "text": "理论上限是131,072（2的17次方），需要完美操作和完美运气。实际社区纪录是65,536。对大多数人来说，达到4096就已经很厉害了。" }
+        },
+        {
+          "@type": "Question",
+          "name": "有2048的AI求解器吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "有。AI算法能达到2048的概率超过90%，4096约10%。但那样还有什么意思？2048的乐趣就在于挣扎的过程。" }
+        },
+        {
+          "@type": "Question",
+          "name": "撤销会影响分数吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "不会。撤销只是回退上一步操作，分数也会回到操作前的状态。放心用，这是学习的工具。" }
+        }
+      ]
+    }
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
