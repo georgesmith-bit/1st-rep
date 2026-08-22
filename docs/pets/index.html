@@ -219,6 +219,8 @@ h1 {
 }
 .win-buttons { display: flex; gap: 8px; justify-content: center; }
 .win-buttons button { margin-top: 12px; }
+.unicorn-card-preview { margin: 12px 0; }
+.unicorn-card-preview img { max-width: 100%; max-height: 45vh; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: block; margin: 0 auto; }
 button:disabled { opacity: 0.4; cursor: not-allowed; }
 /* Sparkle particles */
 .sparkle {
@@ -344,11 +346,12 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     <div id="unicorn-message" class="overlay hidden">
         <div class="overlay-box">
             <h2 data-i18n="unicornTitle">🦄 Ultimate Pet Unlocked!</h2>
-            <p data-i18n="unicornDesc">You evolved the Unicorn — the rarest pet of all!</p>
+            <div class="unicorn-card-preview">
+                <img id="unicorn-card-img" alt="Unicorn achievement card">
+            </div>
             <div class="win-buttons">
-                <button onclick="hideOverlay('unicorn-message');" data-i18n="keepPlaying">Keep Playing</button>
-                <button onclick="startGame(); hideOverlay('unicorn-message');" data-i18n="newGame">New Game</button>
                 <button onclick="downloadUnicornCard();" data-i18n="downloadCard">📥 Download Card</button>
+                <button onclick="startGame(); hideOverlay('unicorn-message');" data-i18n="newGame">New Game</button>
             </div>
         </div>
     </div>
@@ -847,11 +850,9 @@ function renderWithAnimation(moveInfo, newTile, onDone) {
                             updateCollectionCount();
                         }, 400);
                     }
-                    // Ultimate pet (Unicorn = 4096) unlock celebration
+                    // Ultimate pet (Unicorn = 4096) unlock celebration — 直接展示卡片
                     if (merge.value >= 4096) {
-                        setTimeout(()=>{
-                            document.getElementById('unicorn-message').classList.remove('hidden');
-                        }, 600);
+                        setTimeout(()=>{ showUnicornCard(); }, 600);
                     }
                 }
                 const secondTile = tileElements.get(mergeMoves[1].id);
@@ -1016,7 +1017,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     if (line) ctx.fillText(line, x, y);
     return y;
 }
-function downloadUnicornCard() {
+function renderUnicornCard() {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
     canvas.height = 1350;
@@ -1066,13 +1067,20 @@ function downloadUnicornCard() {
     ctx.font = '38px Arial, sans-serif';
     ctx.fillText(dateStr + '  ·  Score ' + score, 540, 1200);
 
-    // 下载 PNG
+    return canvas;
+}
+function downloadUnicornCard() {
     const link = document.createElement('a');
     link.download = 'unicorn-merge.png';
-    link.href = canvas.toDataURL('image/png');
+    link.href = renderUnicornCard().toDataURL('image/png');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+function showUnicornCard() {
+    const img = document.getElementById('unicorn-card-img');
+    if (img) img.src = renderUnicornCard().toDataURL('image/png');
+    document.getElementById('unicorn-message').classList.remove('hidden');
 }
 function confirmNewGame(callback) {
     if (score > 0 && !gameOver) {
