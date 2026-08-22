@@ -162,6 +162,7 @@ const settingsBackdrop = document.getElementById('settings-backdrop');
 const menuTutorial = document.getElementById('menu-tutorial');
 const menuTheme = document.getElementById('menu-theme');
 const menuThemeIcon = document.getElementById('menu-theme-icon');
+const menuPets = document.getElementById('menu-pets');
 const savedTheme = localStorage.getItem('theme') || 'light';
 
 function updateThemeIcon() {
@@ -195,6 +196,14 @@ menuTheme.addEventListener('click', () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcon();
     trackThemeToggle(isDark ? 'dark' : 'light');
+});
+
+menuPets.addEventListener('click', () => {
+    const p = location.pathname;
+    let petsPath = '/pets/';
+    if (p.indexOf('/zh/') !== -1) petsPath = '/pets/?lang=zh';
+    else if (p.indexOf('/vi/') !== -1) petsPath = '/pets/?lang=vi';
+    location.href = petsPath;
 });
 
 // Initialize game
