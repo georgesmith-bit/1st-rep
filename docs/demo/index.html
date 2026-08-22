@@ -429,6 +429,7 @@ function spawnTile() {
     const value = Math.random()<0.9 ? 2 : 4;
     const id = nextTileId++;
     grid[r][c] = {id, value};
+    discoverPet(value); // 静默记录 spawn 的宠物（Slime/Cat），否则 Slime(2) 永远"未发现"（它只能 spawn，不能合并产生）
     return {id, value, r, c};
 }
 function moveGrid(direction) {
