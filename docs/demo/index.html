@@ -699,6 +699,9 @@ function loadGameState() {
         score = s.score; best = s.best; gameOver = s.gameOver;
         won = s.won; continuedAfterWin = s.continuedAfterWin;
         nextTileId = s.nextTileId; discovered = s.discovered || {};
+        // 空棋盘守卫：存档 grid 全空时视为无效，避免渲染空白棋盘
+        const hasTiles = grid.some(row => row.some(c => c !== null));
+        if (!hasTiles) return false;
         return true;
     } catch(e) { return false; }
 }
