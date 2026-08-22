@@ -687,12 +687,6 @@ function renderWithAnimation(moveInfo, newTile, onDone) {
 }
 
 // ==================== GAME FLOW ====================
-function saveUndo() {
-    undoState = {
-        grid: grid.map(r=>r.map(c=>c?{...c}:null)),
-        score, nextTileId, gameOver, won
-    };
-}
 function restoreUndo() {
     if (!undoState) return false;
     grid = undoState.grid;
@@ -770,9 +764,15 @@ function startGame() {
 }
 function handleMove(direction) {
     if (isProcessing || gameOver) return;
-    saveUndo();
+    // 记录 move 前状态（深拷贝），仅在 move 有效时才写入 undoState
+    const oldGrid = grid.map(r=>r.map(c=>c?{...c}:null));
+    const oldScore = score;
+    const oldNextId = nextTileId;
+    const oldGameOver = gameOver;
+    const oldWon = won;
     const moveInfo = moveGrid(direction);
-    if (!moveInfo) { undoState=null; return; }
+    if (!moveInfo) return; // 无效移动：不碰 undoState，保留上一步的撤销能力
+    undoState = { grid: oldGrid, score: oldScore, nextTileId: oldNextId, gameOver: oldGameOver, won: oldWon };
     isProcessing = true;
     const newTile = spawnTile();
     renderWithAnimation(moveInfo, newTile, ()=>{
