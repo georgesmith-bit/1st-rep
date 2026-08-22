@@ -1070,12 +1070,25 @@ function renderUnicornCard() {
     return canvas;
 }
 function downloadUnicornCard() {
-    const link = document.createElement('a');
-    link.download = 'unicorn-merge.png';
-    link.href = renderUnicornCard().toDataURL('image/png');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const canvas = renderUnicornCard();
+    canvas.toBlob((blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'unicorn-merge.png', { type: 'image/png' });
+        // iOS 15+ / 支持文件分享的移动端：用系统分享面板（用户选「存储图像」或分享到社交）
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Unicorn Merge' }).catch(()=>{});
+            return;
+        }
+        // 降级：Blob URL + download（桌面 / Android 直接下载）
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'unicorn-merge.png';
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    }, 'image/png');
 }
 function showUnicornCard() {
     const img = document.getElementById('unicorn-card-img');
