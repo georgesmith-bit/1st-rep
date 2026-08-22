@@ -569,22 +569,48 @@ function createTileElement(id, value, r, c) {
     tile.appendChild(inner);
     return tile;
 }
+function updateTileContent(tile, value) {
+    const pet = PETS[value] || {emoji:'❓',name:'?',rarity:'common'};
+    tile.setAttribute('data-rarity', pet.rarity);
+    const inner = tile.querySelector('.tile-inner');
+    if (inner) {
+        updateLayoutCache();
+        const cellSize = layoutCache.cellSize;
+        inner.innerHTML = `
+            <span class="tile-emoji" style="font-size:${cellSize*0.35}px">${pet.emoji}</span>
+            <span class="tile-name" style="font-size:${cellSize*0.13}px">${pet.name}</span>
+            <span class="tile-value" style="font-size:${cellSize*0.14}px">${value}</span>
+        `;
+    }
+}
 function render() {
     scoreEl.textContent = formatScore(score);
     bestEl.textContent = formatScore(best);
     buildGridBackground();
     const currentIds = new Set();
+    const updates = [];
     const creates = [];
     for (let r=0;r<GRID_SIZE;r++) for (let c=0;c<GRID_SIZE;c++) {
         const cell = grid[r][c];
         if (!cell) continue;
         currentIds.add(cell.id);
-        if (!tileElements.has(cell.id)) creates.push({id:cell.id, value:cell.value, r, c});
+        if (tileElements.has(cell.id)) {
+            updates.push({id:cell.id, value:cell.value, r, c});
+        } else {
+            creates.push({id:cell.id, value:cell.value, r, c});
+        }
     }
     const toRemove = [];
     for (const [id] of tileElements) if (!currentIds.has(id)) toRemove.push(id);
     requestAnimationFrame(()=>{
         for (const id of toRemove) { tileElements.get(id).remove(); tileElements.delete(id); }
+        // 现有 tile：只更新位置和内容，不触发膨胀动画（undo 后平滑移动，对齐原版）
+        for (const {id, value, r, c} of updates) {
+            const tile = tileElements.get(id);
+            const pos = getTilePosition(r, c);
+            setTilePos(tile, pos.left, pos.top, layoutCache.cellSize);
+            updateTileContent(tile, value);
+        }
         for (const {id,value,r,c} of creates) {
             const tile = createTileElement(id,value,r,c);
             boardEl.appendChild(tile);
@@ -676,9 +702,7 @@ function restoreUndo() {
     nextTileId = undoState.nextTileId;
     undoState = null;
     lastScore = score;
-    tileElements.forEach(t=>t.remove());
-    tileElements.clear();
-    render();
+    render(); // render 的 updates 分支处理现有 tile 的平滑移动，creates 分支处理恢复的 tile
     return true;
 }
 function saveBest() {
@@ -698,7 +722,12 @@ function undoMove() {
 function saveGameState() {
     const state = {
         grid: grid.map(r=>r.map(c=>c?{...c}:null)),
-        score, best, gameOver, won, continuedAfterWin, nextTileId, discovered
+        score, best, gameOver, won, continuedAfterWin, nextTileId, discovered,
+        undoState: undoState ? {
+            grid: undoState.grid.map(r=>r.map(c=>c?{...c}:null)),
+            score: undoState.score, nextTileId: undoState.nextTileId,
+            gameOver: undoState.gameOver, won: undoState.won
+        } : null
     };
     localStorage.setItem('petmerge_state', JSON.stringify(state));
 }
@@ -711,6 +740,11 @@ function loadGameState() {
         score = s.score; best = s.best; gameOver = s.gameOver;
         won = s.won; continuedAfterWin = s.continuedAfterWin;
         nextTileId = s.nextTileId; discovered = s.discovered || {};
+        undoState = s.undoState ? {
+            grid: s.undoState.grid.map(r=>r.map(c=>c?{...c}:null)),
+            score: s.undoState.score, nextTileId: s.undoState.nextTileId,
+            gameOver: s.undoState.gameOver, won: s.undoState.won
+        } : null;
         // 空棋盘守卫：存档 grid 全空时视为无效，避免渲染空白棋盘
         const hasTiles = grid.some(row => row.some(c => c !== null));
         if (!hasTiles) return false;
