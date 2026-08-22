@@ -992,15 +992,25 @@ function keepPlaying() {
     saveGameState();
 }
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    // 优先按单词换行（英文），超长词/无空格中文按字符拆
+    const words = text.split(' ');
     let line = '';
-    for (const ch of text) {
-        const test = line + ch;
-        if (line && ctx.measureText(test).width > maxWidth) {
-            ctx.fillText(line, x, y);
-            line = ch;
-            y += lineHeight;
+    for (const word of words) {
+        if (ctx.measureText(word).width > maxWidth) {
+            // 超长词（如整句中文）按字符拆
+            if (line) { ctx.fillText(line.trim(), x, y); y += lineHeight; line = ''; }
+            let sub = '';
+            for (const ch of word) {
+                if (ctx.measureText(sub + ch).width > maxWidth) {
+                    ctx.fillText(sub, x, y); y += lineHeight; sub = ch;
+                } else { sub += ch; }
+            }
+            line = sub;
         } else {
-            line = test;
+            const test = line ? line + ' ' + word : word;
+            if (ctx.measureText(test).width > maxWidth) {
+                ctx.fillText(line, x, y); y += lineHeight; line = word;
+            } else { line = test; }
         }
     }
     if (line) ctx.fillText(line, x, y);
