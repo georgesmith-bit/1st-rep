@@ -509,6 +509,12 @@ const PETS = {
     4096: { emoji: '🦄', name: 'Unicorn', rarity: 'mythic',   color: '#ff80ab' },
 };
 
+// ==================== GA4 PET EVENT TRACKING ====================
+function petTrack(name, params = {}) {
+    if (typeof gtag !== 'function') return;
+    try { gtag('event', name, params); } catch (e) {}
+}
+
 // ==================== GAME STATE ====================
 const GRID_SIZE = 4;
 let grid = [];
@@ -568,6 +574,7 @@ function discoverPet(value) {
     if (!PETS[value] || discovered[value]) return false;
     discovered[value] = true;
     updateCollectionCount();
+    petTrack('pet_discover', { pet_value: value });
     return true;
 }
 function updateCollectionCount() {
@@ -852,6 +859,7 @@ function renderWithAnimation(moveInfo, newTile, onDone) {
                     }
                     // Ultimate pet (Unicorn = 4096) unlock celebration — 直接展示卡片
                     if (merge.value >= 4096) {
+                        petTrack('pet_unicorn', { score });
                         setTimeout(()=>{ showUnicornCard(); }, 600);
                     }
                 }
@@ -938,6 +946,7 @@ function updateUndoButton() {
 }
 function startGame() {
     initGrid();
+    petTrack('pet_game_start');
     score=0; gameOver=false; won=false; continuedAfterWin=false;
     lastScore = 0;
     if (!best) { const s=localStorage.getItem('petmerge_best'); best=s?parseInt(s):0; }
@@ -960,6 +969,7 @@ function handleMove(direction) {
     const moveInfo = moveGrid(direction);
     if (!moveInfo) return; // 无效移动：不碰 undoState，保留上一步的撤销能力
     undoState = { grid: oldGrid, score: oldScore, nextTileId: oldNextId, gameOver: oldGameOver, won: oldWon };
+    for (const m of moveInfo.merges) petTrack('pet_merge', { pet_value: m.value });
     isProcessing = true;
     const newTile = spawnTile();
     renderWithAnimation(moveInfo, newTile, ()=>{
@@ -970,6 +980,7 @@ function handleMove(direction) {
         updateUndoButton();
         if (!canMove() && !gameOver) {
             gameOver=true;
+            petTrack('pet_game_over', { score });
             saveGameState();
             setTimeout(()=>{
                 document.getElementById('final-score').textContent = formatScore(score);
@@ -979,6 +990,7 @@ function handleMove(direction) {
         }
         if (!won && checkWin()) {
             won=true;
+            petTrack('pet_win', { score });
             saveGameState();
             setTimeout(()=>{
                 document.getElementById('win-score').textContent = formatScore(score);
