@@ -62,6 +62,50 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://live2048.com/pets/how-to-play/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/pets/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/zh/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://live2048.com/pets/vi/how-to-play/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/how-to-play/"/>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/pets/zh/how-to-play/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/pets/vi/how-to-play/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/pets/tips/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/pets/tips/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/zh/tips/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://live2048.com/pets/vi/tips/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/tips/"/>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/pets/zh/tips/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://live2048.com/pets/vi/tips/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://live2048.com/tips/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://live2048.com/tips/"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://live2048.com/zh/tips/"/>

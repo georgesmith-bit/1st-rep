@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cách chơi Unicorn Merge — trò chơi hợp nhất thú cưng dễ thương. Hợp nhất từ Slime đến Kỳ Lân huyền thoại, khám phá đủ 12 thú cưng và nắm vững chiến thuật. Miễn phí, không cần tải.">
+    <meta property="og:title" content="Cách Chơi Unicorn Merge — Hợp Nhất Thú Cưng Từ Slime Đến Kỳ Lân">
+    <meta property="og:description" content="Hướng dẫn từng bước: luật chơi, chuỗi tiến hóa, chiến thuật và mẹo để tiến hóa thú cưng đến Kỳ Lân huyền thoại.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://live2048.com/pets/vi/how-to-play/">
+    <meta property="og:image" content="https://live2048.com/og-image-pets.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cách Chơi Unicorn Merge — Hợp Nhất Thú Cưng Từ Slime Đến Kỳ Lân">
+    <meta name="twitter:description" content="Luật chơi, chuỗi tiến hóa và chiến thuật để tiến hóa thú cưng đến Kỳ Lân.">
+    <link rel="canonical" href="https://live2048.com/pets/vi/how-to-play/">
+    <link rel="alternate" hreflang="en" href="https://live2048.com/pets/how-to-play/">
+    <link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/zh/how-to-play/">
+    <link rel="alternate" hreflang="vi" href="https://live2048.com/pets/vi/how-to-play/">
+    <link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/how-to-play/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Cách Chơi Unicorn Merge — Luật, Tiến Hóa &amp; Chiến Thuật [Hướng Dẫn 2026]</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>body{overflow:auto;touch-action:auto}</style>
+    <style>
+        .guide {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            color: #776e65;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .guide h1 { font-size: 2rem; color: #776e65; margin-bottom: 0.5rem; }
+        .guide h2 { font-size: 1.4rem; color: #776e65; margin: 2rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #eee4da; }
+        .guide h3 { font-size: 1.1rem; color: #8e7a66; margin: 1.2rem 0 0.3rem; }
+        .guide p { margin: 0.5rem 0; }
+        .guide ul, .guide ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+        .guide li { margin: 0.3rem 0; }
+        .guide a { color: #776e65; font-weight: bold; }
+        .guide .play-btn {
+            display: inline-block;
+            margin: 2rem 0;
+            padding: 14px 36px;
+            background: #8f7a66;
+            color: #f9f6f2;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .guide .play-btn:hover { background: #9f8a76; }
+        .guide .btn-group { text-align: center; margin: 1.5rem 0; }
+        .guide .btn-group .play-btn { margin: 0 6px 8px; }
+        .guide .unicorn-btn { background: #f7eef2; color: #a85878; border: 2px solid #e290b0; }
+        .guide .unicorn-btn:hover { background: #f1dfe8; border-color: #cf7a9e; }
+        .guide .tip-box {
+            background: #faf8ef;
+            border-left: 4px solid #f0b27a;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .guide .mistake-box {
+            background: #fff5f5;
+            border-left: 4px solid #e57373;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .guide code { background: #eee4da; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        .guide .chain {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 1rem 0;
+            font-size: 0.95em;
+        }
+        .guide .chain span {
+            background: #faf8ef;
+            border: 1px solid #eee4da;
+            border-radius: 6px;
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+        @media (prefers-color-scheme: dark) {
+            .guide { color: #d4c5b9; }
+            .guide h1, .guide h2 { color: #d4c5b9; }
+            .guide h3 { color: #b8a99a; }
+            .guide .tip-box { background: #2a2520; border-color: #f0b27a; }
+            .guide .mistake-box { background: #2a2020; border-color: #e57373; }
+            .guide a { color: #d4c5b9; }
+            .guide code { background: #3a3530; }
+            .guide .chain span { background: #2a2520; border-color: #3a3530; }
+        }
+    </style>
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Cách Chơi Unicorn Merge — Hợp Nhất Thú Cưng Từ Slime Đến Kỳ Lân",
+      "description": "Hướng dẫn từng bước cách chơi Unicorn Merge: luật chơi, chuỗi tiến hóa, chiến thuật và mẹo để tiến hóa thú cưng đến Kỳ Lân.",
+      "url": "https://live2048.com/pets/vi/how-to-play/",
+      "image": "https://live2048.com/og-image-pets.svg",
+      "author": { "@type": "Person", "name": "Live2048 Team" },
+      "datePublished": "2026-09-19",
+      "dateModified": "2026-09-19",
+      "inLanguage": "vi",
+      "about": { "@type": "VideoGame", "name": "Unicorn Merge" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Unicorn Merge có miễn phí không?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Có — Unicorn Merge hoàn toàn miễn phí và chạy ngay trên trình duyệt. Không cần tải xuống, không cần đăng ký, chơi được trên cả điện thoại và máy tính." }
+        },
+        {
+          "@type": "Question",
+          "name": "Làm sao để có Kỳ Lân?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Hợp nhất hai con Rồng lại với nhau. Mỗi con Rồng là thú cưng cấp 2048, nên để có Kỳ Lân bạn cần hai con — đây là thú cưng hiếm nhất, mục tiêu cuối cùng trong bộ sưu tập." }
+        },
+        {
+          "@type": "Question",
+          "name": "Có bao nhiêu thú cưng để sưu tầm?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Có 12 thú cưng, từ Slime lúc bắt đầu cho đến Kỳ Lân huyền thoại. Mỗi lần hợp nhất có thể hé lộ một thú cưng mới cho bộ sưu tập của bạn." }
+        },
+        {
+          "@type": "Question",
+          "name": "Unicorn Merge có giống 2048 không?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Dùng đúng luật trượt-và-hợp-nhất của 2048, nhưng thay số bằng thú cưng dễ thương. Hợp nhất hai thú cưng giống nhau để tiến hóa thành sinh vật tiếp theo." }
+        }
+      ]
+    }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S0NZ96NCB1');
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Unicorn Merge</h1>
+            <div class="scores">
+                <div class="score-box">Hướng dẫn</div>
+            </div>
+        </header>
+        <div class="guide">
+            <h1>Cách Chơi Unicorn Merge — Hợp Nhất Thú Cưng Từ Slime Đến Kỳ Lân</h1>
+            <p style="color:#8e7a66;">Cập nhật: Tháng 9 năm 2026 · Đọc 5 phút</p>
+
+            <p><strong>Unicorn Merge</strong> là trò chơi ghép hình thú cưng đáng yêu: trượt các thú cưng trên lưới 4×4, hợp nhất hai thú cưng giống nhau để tiến hóa thành sinh vật tiếp theo, và leo lên nấc thang tiến hóa cho đến <strong>🦄 Kỳ Lân</strong> huyền thoại. Nếu bạn đã chơi 2048, luật chơi hoàn toàn quen thuộc — ở đây, số trở thành thú cưng và phần thưởng là một bộ sưu tập đầy đủ để khám phá.</p>
+
+            <div class="btn-group">
+                <a class="play-btn unicorn-btn" href="/pets/?lang=vi">🦄 Chơi Unicorn Merge</a>
+                <a class="play-btn" href="/vi/">▶ Chơi 2048 Cổ Điển</a>
+            </div>
+
+            <h2>1. Bắt Đầu Nhanh: Trò Chơi Hoạt Động Thế Nào</h2>
+            <p>Bạn bắt đầu với hai thú cưng (thường là hai <code>Slime</code>) trên lưới 4×4. Mỗi nước đi:</p>
+            <ol>
+                <li><strong>Vuốt</strong> (hoặc nhấn phím mũi tên) theo một hướng — lên, xuống, trái hoặc phải.</li>
+                <li><strong>Tất cả thú cưng trượt</strong> xa nhất có thể theo hướng đó.</li>
+                <li>Khi hai <strong>thú cưng giống nhau</strong> chạm nhau, chúng <strong>hợp nhất</strong> và tiến hóa thành thú cưng tiếp theo.</li>
+                <li>Một thú cưng mới xuất hiện ở ô trống ngẫu nhiên.</li>
+            </ol>
+            <p>Mục tiêu: tiếp tục hợp nhất cho đến khi tiến hóa thú cưng đến <strong>🦄 Kỳ Lân</strong>. Trên đường đi, mỗi thú cưng mới bạn khám phá sẽ được thêm vào bộ sưu tập.</p>
+
+            <div class="tip-box">
+                <strong>💡 Mẹo hay:</strong> Mỗi lần hợp nhất đều cộng điểm và — quan trọng hơn — hợp nhất ra thú cưng bạn chưa từng thấy sẽ hé lộ nó trong bộ sưu tập. Khám phá chính là trái tim của trò chơi.
+            </div>
+
+            <h2>2. Chuỗi Tiến Hóa (12 Thú Cưng)</h2>
+            <p>Mỗi thú cưng có một vị trí trên nấc thang. Hợp nhất hai con giống nhau để tiến hóa lên một bậc:</p>
+            <div class="chain">
+                <span>🟢 Slime</span><span>🐱 Mèo</span><span>🦊 Cáo</span><span>🐺 Sói</span><span>🐻 Gấu</span><span>🦅 Đại Bàng</span><span>🦈 Cá Mập</span><span>🐯 Hổ</span><span>🐊 Cá Sấu</span><span>🦚 Công</span><span>🐉 Rồng</span><span>🦄 Kỳ Lân</span>
+            </div>
+            <p><strong>Rồng</strong> là thú cưng hiếm thứ hai, còn <strong>🦄 Kỳ Lân</strong> là mục tiêu tối thượng — hợp nhất được nó là bạn đã hoàn thành chuỗi tiến hóa.</p>
+
+            <h2>3. Điều Khiển</h2>
+            <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+                <tr style="border-bottom:1px solid #eee4da;"><th style="text-align:left; padding:6px;">Nền tảng</th><th style="text-align:left; padding:6px;">Cách chơi</th></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">Máy tính</td><td style="padding:6px;">Phím mũi tên (↑ ↓ ← →) hoặc W/A/S/D</td></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">Điện thoại / Máy tính bảng</td><td style="padding:6px;">Vuốt theo bất kỳ hướng nào</td></tr>
+                <tr><td style="padding:6px;">Laptop cảm ứng</td><td style="padding:6px;">Vuốt trên touchpad hoặc dùng phím mũi tên</td></tr>
+            </table>
+
+            <h2>4. Chiến Thuật Cốt Lõi: Phương Pháp Góc</h2>
+            <p>Chiến thuật thắng 2048 cũng thắng Unicorn Merge:</p>
+            <ol>
+                <li><strong>Chọn một góc</strong> — hầu hết người chơi dùng <strong>góc dưới bên phải</strong>.</li>
+                <li><strong>Giữ thú cưng hiếm nhất</strong> ở góc đó. Đừng bao giờ đưa nó ra ngoài.</li>
+                <li><strong>Xếp chuỗi giảm dần</strong> dọc hàng dưới: thú hiếm nhất ở góc, thú hiếm thứ nhì kế bên.</li>
+                <li><strong>Chỉ dùng 2 hướng</strong> — thường là <strong>xuống</strong> và <strong>phải</strong>. Tránh vuốt lên nếu không bắt buộc.</li>
+            </ol>
+
+            <div class="mistake-box">
+                <strong>⚠️ Lỗi thường gặp:</strong> Vuốt lung tung cả bốn hướng. Điều này làm thú cưng hiếm vương vãi khắp bàn và bạn sẽ hết chỗ rất nhanh. Hãy kỷ luật chỉ dùng 2 hướng trong 90% thời gian.
+            </div>
+
+            <h2>5. 5 Mẹo Hàng Đầu</h2>
+            <ol>
+                <li><strong>Đừng vuốt lên</strong> trừ khi bàn cờ hoàn toàn bế tắc. Lên là hướng nguy hiểm nhất — nó có thể nhấc thú cưng hiếm ra khỏi vị trí.</li>
+                <li><strong>Lấp hàng dưới trước.</strong> Thú cưng ở hàng dưới không di chuyển khi vuốt xuống, nên đó là nơi an toàn nhất cho thú hiếm.</li>
+                <li><strong>Chỉ hợp nhất khi nó nuôi chuỗi.</strong> Hợp nhất ở góc trên trái có thể thấy vui, nhưng nếu không xây được chuỗi hàng dưới thì chỉ là lộn xộn.</li>
+                <li><strong>Coi chừng bẫy.</strong> Nếu ba mặt của thú hiếm nhất bị chặn, bạn chỉ còn một nước sai là mất nó. Hãy tính trước 2–3 nước.</li>
+                <li><strong>Xem bộ sưu tập.</strong> Bộ sưu tập hiện mọi thú cưng bạn đã khám phá — một động lực tuyệt vời để tiếp tục leo thang.</li>
+            </ol>
+
+            <h2>6. Câu Hỏi Thường Gặp</h2>
+            <h3>Unicorn Merge có miễn phí không?</h3>
+            <p>Có — miễn phí 100%, không cần tải, không cần đăng ký. Chơi ngay trên trình duyệt, cả điện thoại lẫn máy tính.</p>
+            <h3>Làm sao để có Kỳ Lân?</h3>
+            <p>Hợp nhất hai con <strong>Rồng</strong>. Mỗi con Rồng là thú cưng cấp rất cao, nên cần kiên nhẫn — nhưng Kỳ Lân là thú cưng hiếm nhất, xứng đáng từng lần hợp nhất.</p>
+            <h3>Có bao nhiêu thú cưng?</h3>
+            <p>12 thú cưng, từ Slime khiêm tốn đến Kỳ Lân huyền thoại. Mỗi con là một bậc trên nấc thang tiến hóa.</p>
+            <h3>Unicorn Merge có giống 2048 không?</h3>
+            <p>Cùng luật, diện mạo mới. Là đúng câu đố trượt-và-hợp-nhất, với thú cưng thay cho số — một cách mới để thưởng thức trò kinh điển.</p>
+
+            <hr style="border:none; border-top:2px solid #eee4da; margin:3rem 0 2rem;">
+
+            <h2>7. Từ Thú Cưng Trở Về Số: 2048 Cổ Điển</h2>
+            <p>Thích bản gốc hơn? Unicorn Merge được xây trên cùng câu đố vượt thời gian — <strong>2048</strong>. Trượt các ô số, hợp nhất số trùng nhau và săn ô 2048. Nếu muốn trải nghiệm số cổ điển, chúng tôi cũng có.</p>
+
+            <p style="text-align:center; font-size:1.2rem;">Sẵn sàng tiến hóa thú cưng đầu tiên?</p>
+            <div class="btn-group">
+                <a class="play-btn unicorn-btn" href="/pets/?lang=vi">🦄 Chơi Unicorn Merge</a>
+                <a class="play-btn" href="/vi/">▶ Chơi 2048 Cổ Điển</a>
+            </div>
+
+            <p style="text-align:center; color:#8e7a66; margin-top:2rem; font-size:0.85rem;">
+                <a href="/pets/?lang=vi">Unicorn Merge Game</a> · <a href="/pets/vi/tips/">Mẹo &amp; Chiến Thuật</a> · <a href="/vi/">2048 Cổ Điển</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

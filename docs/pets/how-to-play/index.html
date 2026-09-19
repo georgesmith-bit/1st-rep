@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to play Unicorn Merge — the cute merge-pets puzzle. Merge from Slime to the legendary Unicorn, discover all 12 pets, and master the strategy. Free, no downloads.">
+    <meta property="og:title" content="How to Play Unicorn Merge — Merge Pets from Slime to Unicorn">
+    <meta property="og:description" content="Step-by-step guide: rules, evolution chain, strategy, and tips to evolve your pets all the way to the legendary Unicorn.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://live2048.com/pets/how-to-play/">
+    <meta property="og:image" content="https://live2048.com/og-image-pets.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Play Unicorn Merge — Merge Pets from Slime to Unicorn">
+    <meta name="twitter:description" content="Rules, evolution chain, and strategy to evolve your pets to the Unicorn. Free guide.">
+    <link rel="canonical" href="https://live2048.com/pets/how-to-play/">
+    <link rel="alternate" hreflang="en" href="https://live2048.com/pets/how-to-play/">
+    <link rel="alternate" hreflang="zh-CN" href="https://live2048.com/pets/zh/how-to-play/">
+    <link rel="alternate" hreflang="vi" href="https://live2048.com/pets/vi/how-to-play/">
+    <link rel="alternate" hreflang="x-default" href="https://live2048.com/pets/how-to-play/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>How to Play Unicorn Merge — Rules, Evolution &amp; Strategy [2026 Guide]</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>body{overflow:auto;touch-action:auto}</style>
+    <style>
+        .guide {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            color: #776e65;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .guide h1 { font-size: 2rem; color: #776e65; margin-bottom: 0.5rem; }
+        .guide h2 { font-size: 1.4rem; color: #776e65; margin: 2rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #eee4da; }
+        .guide h3 { font-size: 1.1rem; color: #8e7a66; margin: 1.2rem 0 0.3rem; }
+        .guide p { margin: 0.5rem 0; }
+        .guide ul, .guide ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+        .guide li { margin: 0.3rem 0; }
+        .guide a { color: #776e65; font-weight: bold; }
+        .guide .play-btn {
+            display: inline-block;
+            margin: 2rem 0;
+            padding: 14px 36px;
+            background: #8f7a66;
+            color: #f9f6f2;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .guide .play-btn:hover { background: #9f8a76; }
+        .guide .btn-group {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .guide .btn-group .play-btn {
+            margin: 0 6px 8px;
+        }
+        .guide .unicorn-btn {
+            background: #f7eef2;
+            color: #a85878;
+            border: 2px solid #e290b0;
+        }
+        .guide .unicorn-btn:hover {
+            background: #f1dfe8;
+            border-color: #cf7a9e;
+        }
+        .guide .tip-box {
+            background: #faf8ef;
+            border-left: 4px solid #f0b27a;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .guide .mistake-box {
+            background: #fff5f5;
+            border-left: 4px solid #e57373;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .guide code {
+            background: #eee4da;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .guide .chain {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 1rem 0;
+            font-size: 0.95em;
+        }
+        .guide .chain span {
+            background: #faf8ef;
+            border: 1px solid #eee4da;
+            border-radius: 6px;
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+        @media (prefers-color-scheme: dark) {
+            .guide { color: #d4c5b9; }
+            .guide h1, .guide h2 { color: #d4c5b9; }
+            .guide h3 { color: #b8a99a; }
+            .guide .tip-box { background: #2a2520; border-color: #f0b27a; }
+            .guide .mistake-box { background: #2a2020; border-color: #e57373; }
+            .guide a { color: #d4c5b9; }
+            .guide code { background: #3a3530; }
+            .guide .chain span { background: #2a2520; border-color: #3a3530; }
+        }
+    </style>
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Play Unicorn Merge — Merge Pets from Slime to Unicorn",
+      "description": "Learn how to play Unicorn Merge with our step-by-step guide. Rules, evolution chain, strategy, and tips to evolve your pets to the Unicorn.",
+      "url": "https://live2048.com/pets/how-to-play/",
+      "image": "https://live2048.com/og-image-pets.svg",
+      "author": { "@type": "Person", "name": "Live2048 Team" },
+      "datePublished": "2026-09-19",
+      "dateModified": "2026-09-19",
+      "inLanguage": "en",
+      "about": { "@type": "VideoGame", "name": "Unicorn Merge" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Unicorn Merge free to play?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — Unicorn Merge is 100% free and runs in your browser. No downloads, no sign-up, and it works on both mobile and desktop." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get the Unicorn?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Merge two Dragon tiles together. Each Dragon is a 2048-level tile, so reaching the Unicorn takes two of them — the final, rarest evolution in the collection." }
+        },
+        {
+          "@type": "Question",
+          "name": "How many pets are there to collect?",
+          "acceptedAnswer": { "@type": "Answer", "text": "There are 12 pets in total, from the Slime at the start all the way up to the legendary Unicorn. Every merge can reveal a new pet for your collection." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Unicorn Merge the same as 2048?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It uses the exact same slide-and-merge rules as 2048, but replaces numbers with adorable pets. Merge two identical pets to evolve them into the next creature." }
+        }
+      ]
+    }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-S0NZ96NCB1');
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Unicorn Merge</h1>
+            <div class="scores">
+                <div class="score-box">Guide</div>
+            </div>
+        </header>
+        <div class="guide">
+            <h1>How to Play Unicorn Merge — Merge Pets from Slime to Unicorn</h1>
+            <p style="color:#8e7a66;">Last updated: September 2026 · 5 min read</p>
+
+            <p><strong>Unicorn Merge</strong> is a charming merge puzzle: slide adorable pets on a 4×4 grid, merge two identical pets to evolve them into the next creature, and climb the evolution ladder all the way to the legendary <strong>🦄 Unicorn</strong>. If you've played 2048, you already know the rules — here, numbers become pets and the reward is a full collection to discover.</p>
+
+            <div class="btn-group">
+                <a class="play-btn unicorn-btn" href="/pets/">🦄 Play Unicorn Merge</a>
+                <a class="play-btn" href="/">▶ Play Classic 2048</a>
+            </div>
+
+            <h2>1. Quick Start: How a Game Works</h2>
+            <p>You start with two pets (usually two <code>Slimes</code>) on a 4×4 grid. Each move:</p>
+            <ol>
+                <li><strong>Swipe</strong> (or press an arrow key) in one direction — up, down, left, or right.</li>
+                <li><strong>All pets slide</strong> as far as they can in that direction.</li>
+                <li>When two <strong>identical pets</strong> collide, they <strong>merge into one</strong> and evolve into the next pet in the chain.</li>
+                <li>A new pet appears in a random empty spot.</li>
+            </ol>
+            <p>The goal: keep merging until you evolve your pets all the way to the <strong>🦄 Unicorn</strong>. Along the way, every new pet you discover is added to your collection book.</p>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Every merge adds to your score and — more importantly — a merge into a pet you've never seen before reveals it in your collection. Discovery is the heart of the game.
+            </div>
+
+            <h2>2. The Evolution Chain (12 Pets)</h2>
+            <p>Every pet has a place on the ladder. Merge two of the same to evolve one step up:</p>
+            <div class="chain">
+                <span>🟢 Slime</span><span>🐱 Cat</span><span>🦊 Fox</span><span>🐺 Wolf</span><span>🐻 Bear</span><span>🦅 Eagle</span><span>🦈 Shark</span><span>🐯 Tiger</span><span>🐊 Croco</span><span>🦚 Peacock</span><span>🐉 Dragon</span><span>🦄 Unicorn</span>
+            </div>
+            <p>The <strong>Dragon</strong> is the second-rarest pet, and the <strong>🦄 Unicorn</strong> is the ultimate goal — reach it and you've completed the evolution ladder.</p>
+
+            <h2>3. Controls</h2>
+            <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+                <tr style="border-bottom:1px solid #eee4da;"><th style="text-align:left; padding:6px;">Platform</th><th style="text-align:left; padding:6px;">How to Play</th></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">Desktop</td><td style="padding:6px;">Arrow keys (↑ ↓ ← →) or W/A/S/D</td></tr>
+                <tr style="border-bottom:1px solid #eee4da;"><td style="padding:6px;">Mobile / Tablet</td><td style="padding:6px;">Swipe in any direction</td></tr>
+                <tr><td style="padding:6px;">Touch Laptop</td><td style="padding:6px;">Swipe on trackpad or use arrow keys</td></tr>
+            </table>
+
+            <h2>4. Core Strategy: The Corner Method</h2>
+            <p>The same strategy that wins 2048 wins Unicorn Merge:</p>
+            <ol>
+                <li><strong>Pick a corner</strong> — most players use the <strong>bottom-right</strong>.</li>
+                <li><strong>Keep your rarest pet</strong> locked in that corner. Never move it out.</li>
+                <li><strong>Build descending pets</strong> along the bottom row: rarest pet in the corner, next-rarest beside it.</li>
+                <li><strong>Only use 2 directions</strong> — typically <strong>down</strong> and <strong>right</strong>. Avoid up unless you have to.</li>
+            </ol>
+
+            <div class="mistake-box">
+                <strong>⚠️ Common Mistake:</strong> Swiping in all four directions randomly. This scatters your rare pets across the board and you'll run out of space fast. Discipline yourself to use only 2 directions 90% of the time.
+            </div>
+
+            <h2>5. Top 5 Tips</h2>
+            <ol>
+                <li><strong>Never swipe up</strong> unless the board is completely stuck. Up is the most dangerous direction — it can lift your rare pets out of position.</li>
+                <li><strong>Fill the bottom row first.</strong> Pets on the bottom don't move when you swipe down, so it's the safest home for your rare pets.</li>
+                <li><strong>Merge only when it feeds the chain.</strong> A merge in the top corner might feel good, but if it doesn't build your bottom-row ladder, it's just clutter.</li>
+                <li><strong>Watch for traps.</strong> If three sides of your rarest pet are blocked, you're one bad move from losing it. Plan 2–3 moves ahead.</li>
+                <li><strong>Check your collection.</strong> The collection book shows every pet you've discovered — a great motivator to keep climbing the ladder.</li>
+            </ol>
+
+            <h2>6. FAQ</h2>
+            <h3>Is Unicorn Merge free to play?</h3>
+            <p>Yes — 100% free, no downloads, no sign-up. It runs in your browser on mobile and desktop.</p>
+            <h3>How do I get the Unicorn?</h3>
+            <p>Merge two <strong>Dragons</strong> together. Each Dragon is a very high-level tile, so it takes patience — but the Unicorn is the rarest pet of all, worth every merge.</p>
+            <h3>How many pets are there?</h3>
+            <p>12 pets in total, from the humble Slime to the legendary Unicorn. Each one is a step on the evolution ladder.</p>
+            <h3>Is Unicorn Merge the same as 2048?</h3>
+            <p>Same rules, new skin. It's the exact slide-and-merge puzzle, with pets instead of numbers — a fresh way to enjoy a classic.</p>
+
+            <hr style="border:none; border-top:2px solid #eee4da; margin:3rem 0 2rem;">
+
+            <h2>7. From Pets to Numbers: Classic 2048</h2>
+            <p>Prefer the original? Unicorn Merge is built on the same timeless puzzle — <strong>2048</strong>. Slide numbered tiles, merge matching numbers, and chase the 2048 tile. If you want the classic numbers experience, we've got that too.</p>
+
+            <p style="text-align:center; font-size:1.2rem;">Ready to evolve your first pet?</p>
+            <div class="btn-group">
+                <a class="play-btn unicorn-btn" href="/pets/">🦄 Play Unicorn Merge</a>
+                <a class="play-btn" href="/">▶ Play Classic 2048</a>
+            </div>
+
+            <p style="text-align:center; color:#8e7a66; margin-top:2rem; font-size:0.85rem;">
+                <a href="/pets/">Unicorn Merge Game</a> · <a href="/pets/tips/">Tips &amp; Strategy</a> · <a href="/">Classic 2048</a> · <a href="/tips/">2048 Tips</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
