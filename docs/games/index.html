@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Free Online Games — Play 8 Classic Games | live2048.com</title>
-<meta name="description" content="Play 8 classic games online free: Sudoku, Chess, Minesweeper, Snake, Mahjong Solitaire, Checkers, Memory Match and Connect Four. No download, works on mobile and desktop.">
+<title>Free Online Games — Play 10 Games | live2048.com</title>
+<meta name="description" content="Play 10 free online games: 2048, Unicorn Merge, Sudoku, Chess, Minesweeper, Snake, Mahjong Solitaire, Checkers, Memory Match and Connect Four. No download, works on mobile and desktop.">
 <link rel="canonical" href="https://live2048.com/games/">
-<meta property="og:title" content="Free Online Games — Play 8 Classic Games">
-<meta property="og:description" content="Sudoku, Chess, Minesweeper, Snake, Mahjong, Checkers, Memory Match and Connect Four — all free, no download.">
+<meta property="og:title" content="Free Online Games — Play 10 Games">
+<meta property="og:description" content="2048, Unicorn Merge, Sudoku, Chess, Minesweeper, Snake, Mahjong, Checkers, Memory and Connect Four — all free, no download.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://live2048.com/games/">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CollectionPage","name":"Free Online Games","description":"8 classic games you can play free in your browser.","url":"https://live2048.com/games/"}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Free Online Games","description":"10 free browser games: 2048, Unicorn Merge and 8 classic games.","url":"https://live2048.com/games/"}
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0NZ96NCB1"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S0NZ96NCB1');</script>
@@ -24,7 +24,9 @@ header{background:#fff;border-bottom:1px solid #e9e6e0;padding:14px 20px;font-si
 header a{color:#8f7a66;text-decoration:none;margin-right:8px}
 main{max-width:960px;margin:0 auto;padding:32px 20px 60px}
 h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
-.sub{color:#6f6a61;margin:10px 0 28px;font-size:16px}
+.sub{color:#6f6a61;margin:10px 0 0;font-size:16px}
+.section{font-size:17px;font-weight:700;margin:32px 0 14px;color:#4a463f}
+.section:first-of-type{margin-top:28px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
 .card{display:block;background:#fff;border:1px solid #e9e6e0;border-radius:14px;padding:20px 18px;text-decoration:none;color:inherit;transition:.15s;box-shadow:0 1px 3px rgba(41,37,32,.04)}
 .card:hover{border-color:#8f7a66;transform:translateY(-2px);box-shadow:0 6px 16px rgba(41,37,32,.08)}
@@ -41,9 +43,17 @@ footer a{color:#8f7a66;text-decoration:none}
 <header><a href="/">← live2048.com</a>Free Online Games</header>
 <main>
 <h1>Free Online Games</h1>
-<p class="sub">8 classic games — no download, play right in your browser.</p>
+<p class="sub">10 games — no download, play right in your browser.</p>
+
+<h2 class="section">Our Games</h2>
 <div class="grid">
-  <a class="card" href="/games/sudoku/"><span class="icon">🔢</span><span class="name">Sudoku</span><span class="zh">数独</span><span class="desc">Fill the grid with 1–9</span></a>
+  <a class="card" href="/"><span class="icon">🔢</span><span class="name">2048</span><span class="zh">2048 数字游戏</span><span class="desc">Merge tiles to reach 2048</span></a>
+  <a class="card" href="/pets/"><span class="icon">🦄</span><span class="name">Unicorn Merge</span><span class="zh">合成独角兽</span><span class="desc">Merge pets to evolve the Unicorn</span></a>
+</div>
+
+<h2 class="section">Classic Games</h2>
+<div class="grid">
+  <a class="card" href="/games/sudoku/"><span class="icon">🧮</span><span class="name">Sudoku</span><span class="zh">数独</span><span class="desc">Fill the grid with 1–9</span></a>
   <a class="card" href="/games/chess/"><span class="icon">♟️</span><span class="name">Chess</span><span class="zh">国际象棋</span><span class="desc">Beat the computer</span></a>
   <a class="card" href="/games/minesweeper/"><span class="icon">💣</span><span class="name">Minesweeper</span><span class="zh">扫雷</span><span class="desc">Clear the mines</span></a>
   <a class="card" href="/games/snake/"><span class="icon">🐍</span><span class="name">Snake</span><span class="zh">贪吃蛇</span><span class="desc">Eat, grow, don't crash</span></a>
@@ -53,6 +63,6 @@ footer a{color:#8f7a66;text-decoration:none}
   <a class="card" href="/games/connect-four/"><span class="icon">🔴</span><span class="name">Connect Four</span><span class="zh">四子棋</span><span class="desc">Line up four to win</span></a>
 </div>
 </main>
-<footer>© live2048.com · All games are open source (MIT/Unlicense) and free to play.</footer>
+<footer>© live2048.com · Classic games are open source (MIT/Unlicense) and free to play.</footer>
 </body>
 </html>
