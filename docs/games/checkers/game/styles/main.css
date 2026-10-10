@@ -305,3 +305,13 @@ body {
     box-shadow: inset 0 0 0.75em 0.25em red;
     transition-duration: 0.3s;
 }
+
+/* ============ 响应式适配（2026-10-10）============ */
+/* 移动端：菜单+棋盘改纵向排列，棋盘占满屏幕宽 */
+@media (max-width: 600px) {
+    html, body { flex-flow: column; overflow-y: auto; overflow-x: hidden; }
+    .column { width: 100%; height: auto; }
+    #menu { margin: 1em; width: auto; height: auto; }
+    #board { width: 100%; height: auto; padding: 0.5em 0; }
+    .checkers { width: 92vw; height: 92vw; max-width: 440px; max-height: 440px; }
+}
