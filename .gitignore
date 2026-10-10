@@ -2,4 +2,10 @@ node_modules/
 server.log
 screenshots/
 *.png
-.trae/
+.trae/chrome/
+verify-*.js
+test-*.js
+node_modules/
+
+# 游戏资源图片（games/ 下的 png 不受 *.png 忽略规则影响）
+!docs/games/**/*.png
