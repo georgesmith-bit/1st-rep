@@ -280,6 +280,7 @@ body {
 .sudoku-board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
     gap: 0;
     background-color: var(--border);
     border: 3px solid var(--text-primary);
@@ -297,13 +298,12 @@ body {
 }
 
 .sudoku-cell {
-    aspect-ratio: 1;
     background-color: var(--bg);
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(18px, 4vw, 28px);
+    font-size: clamp(16px, 3vw, 22px);
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
