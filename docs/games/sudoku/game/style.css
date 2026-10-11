@@ -268,6 +268,7 @@ body {
 /* === BOARD CONTAINER === */
 .board-container {
     flex: 1;
+    min-height: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -285,10 +286,14 @@ body {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    max-width: 540px;
+    /* 正方形棋盘，边长 = min(容器可用高度, 540px)；宽度随高度自适应。
+       修复：原先 width:min(90vw,540px)+aspect-ratio 在高度不足的 iframe 里
+       会垂直溢出，顶部第一行被 align-items:center 裁剪且无法滚动到达。 */
+    height: 100%;
     max-height: 540px;
-    width: min(90vw, 540px);
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
+    width: auto;
+    max-width: 100%;
 }
 
 .sudoku-cell {
