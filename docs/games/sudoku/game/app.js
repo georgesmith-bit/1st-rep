@@ -1156,19 +1156,26 @@
         // Check achievements
         checkAchievements();
 
-        // Celebration
+        // Celebration — confetti is lazy-loaded on demand (no longer a render-blocking <head> script)
         playSound('victory');
-        if (typeof confetti !== 'undefined') {
-            try {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            } catch (e) {
-                // Confetti library unavailable; continue without celebration effect
+        (function launchConfetti() {
+            const fire = () => {
+                try {
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                } catch (e) {
+                    // Confetti library unavailable; continue without celebration effect
+                }
+            };
+            if (typeof confetti !== 'undefined') {
+                fire();
+            } else {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+                s.onload = fire;
+                s.onerror = () => {};
+                document.head.appendChild(s);
             }
-        }
+        })();
 
         // Animate board
         animateCompletionGlow();
